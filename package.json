@@ -83,6 +83,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "babel-runtime": "^6.11.6",
     "better-npm-run": "0.0.11",
+    "clean-webpack-plugin": "^0.1.13",
     "css-loader": "^0.25.0",
     "cssnano": "^3.7.4",
     "debug": "^2.2.0",
@@ -105,8 +106,11 @@
     "rimraf": "^2.5.4",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
+    "stylelint-webpack-plugin": "^0.4.0",
     "url-loader": "^0.5.6",
     "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.16.2",
+    "webpack-merge": "^0.14.1",
     "yargs": "^5.0.0"
   },
   "devDependencies": {
