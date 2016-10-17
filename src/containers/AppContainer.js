@@ -4,6 +4,8 @@ import { Provider, connect } from 'react-redux'
 import io from 'socket.io-client';
 import _ from 'lodash';
 
+import { addChat, loadChats } from '../actions/chats';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
@@ -35,9 +37,18 @@ class AppContainer extends Component {
         userLimit: '',
         categories: '',
       },
-      chatName: '',
       addChatModal: false,
     };
+  }
+
+  componentDidMount(props) {
+    var _self = this;
+    socket.on('list_rooms', function(msg) {
+      console.log('listing rooms:');
+      console.log(msg);
+      _self.props.loadChats(msg);
+    });
+    socket.emit('list_rooms');
   }
 
   handleToggle = () => this.setState({addChatOpen: !this.state.addChatOpen});
@@ -47,10 +58,10 @@ class AppContainer extends Component {
     this.setState({addChatModal: true});
   }
   closeAddChatModal = (event) => {
-    event.preventDefault();
     this.setState({addChatModal: false});
   }
   handleModalRoomNameChange = (event) => {
+    console.log('render chats', this.props.chats);
     this.setState({chat: _.extend(this.state.chat, {roomName: event.target.value}) });
   }
   handleModalRoomDescriptionChange = (event) => {
@@ -59,25 +70,27 @@ class AppContainer extends Component {
   handleModalUserLimitChange = (event) => {
     this.setState({chat: _.extend(this.state.chat, {userLimit: event.target.value}) });
   }
-  handleModalSubmit = (event) => {
-    event.preventDefault();
-    const newChat = {
-      name: this.state.chatName.trim(),
-      id: `${Date.now()}${uuid.v4()}`,
-      private: false
-    };
-    this.handleChangeChat(newChat);
+  handleModalSubmit = () => {
+    const newChat = this.state.chat;
+    // this.handleChangeChat(newChat);
     socket.emit('create_room', newChat);
-    this.setState({chatName: ''});
+    this.props.addChat(newChat);
+    this.setState({chat: {
+        user: '',
+        roomName: '',
+        roomDescription: '',
+        userLimit: '',
+        categories: '',
+      }});
     this.closeAddChatModal();
   }
   validateChatName = () => {
-    // const { chats } = this.props;
-    // if (chats.filter(chat => {
-    //   return chat.name === this.state.chatName.trim();
-    // }).length > 0) {
-    //   return 'error';
-    // }
+    var chats = this.props.chats.data;
+    if (chats.filter(chat => {
+      return chat.roomName === this.state.chat.roomName.trim();
+    }).length > 0) {
+      return 'error';
+    }
     return 'success';
   }
   validateUserLimit = () => {
@@ -156,8 +169,9 @@ class AppContainer extends Component {
                   </div>
                 </div>
               </div>
-              <MenuItem>Menu Item</MenuItem>
-              <MenuItem>Menu Item 2</MenuItem>
+              {this.props.chats.data.map(chat =>
+                <MenuItem>{chat.roomName}</MenuItem>
+              )}
             </Drawer>
             {newChatModal}
             <div style={{ height: '100%' }}>
@@ -170,4 +184,16 @@ class AppContainer extends Component {
   }
 }
 
-export default AppContainer
+function mapStateToProps(state) {
+  const { chats } = state;
+  return {
+    chats,
+  }
+}
+
+const mapDispatch = {
+  addChat,
+  loadChats
+};
+
+export default connect(mapStateToProps, mapDispatch)(AppContainer)

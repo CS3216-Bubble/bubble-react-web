@@ -1,4 +1,4 @@
-import { ADD_CHAT } from '../constants/ActionTypes';
+import { ADD_CHAT, LOAD_CHATS } from '../constants/actionTypes';
 
 const initialState = {
   loaded: false,
@@ -6,16 +6,24 @@ const initialState = {
 };
 
 export default function chats(state = initialState, action) {
+  console.log('enter chats');
   switch (action.type) {
-  case ADD_CHAT:
-    if (state.data.filter(chat => chat.name === action.chat.name).length !== 0) {
-      return state;
-    }
-    return {...state,
-      data: [...state.data, action.chat]
-    };
+    case ADD_CHAT:
+      console.log('add chat');
+      if (state.data.filter(chat => chat.roomName === action.chat.roomName).length !== 0) {
+        return state;
+      }
+      return {...state,
+        data: [...state.data, action.chat]
+      };
+    case LOAD_CHATS:
+      console.log('action chats', action.chats);
+      return {...state,
+        data: action.chats,
+      };
     default:
-    return state;
+      console.log('default');
+      return state;
   }
 }
 
