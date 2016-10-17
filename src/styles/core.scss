@@ -15,6 +15,10 @@ body {
   height: 100%;
 }
 
+span {
+    appearance: none !important;
+}
+
 *,
 *:before,
 *:after {
@@ -25,3 +29,4 @@ body {
   padding-top: 20px;
   padding-left: 25px;
 }
+
