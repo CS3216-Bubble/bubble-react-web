@@ -32,13 +32,10 @@ class AppContainer extends Component {
   handleToggle = () => this.setState({addChatOpen: !this.state.addChatOpen});
 
   openAddChatModal = (event) => {
-    console.log('add chat pressed');
     event.preventDefault();
     this.setState({addChatModal: true});
-    console.log(this.state.addChatModal);
   }
   closeAddChatModal = (event) => {
-    console.log('close tapped');
     event.preventDefault();
     this.setState({addChatModal: false});
   }
