@@ -15,7 +15,8 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
-const socket = io('http://localhost:3000');
+const host = window.location.protocol + '//' + window.location.hostname + ':3000';
+const socket = io(host);
 
 class AppContainer extends Component {
   static propTypes = {
