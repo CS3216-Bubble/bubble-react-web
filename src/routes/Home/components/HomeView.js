@@ -1,15 +1,24 @@
-import React from 'react'
-import DuckImage from '../assets/Duck.jpg'
+import React, { Component } from 'react'
 import './HomeView.scss'
 
-export const HomeView = () => (
-  <div>
-    <h4>Welcome!</h4>
-    <img
-      alt='This is a duck, because Redux!'
-      className='duck'
-      src={DuckImage} />
-  </div>
-)
+class HomeView extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      username: ''
+    };
+  }
+
+  render() {
+    const {screenWidth} = this.props;
+    return (
+      <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
+        <header style={{textAlign: 'center'}}>
+          <p>Welcome to Bubble Chat</p>
+        </header>
+      </div>
+    );
+  }
+}
 
 export default HomeView
