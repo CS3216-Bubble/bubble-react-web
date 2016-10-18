@@ -1,11 +1,12 @@
-import { ADD_CHAT, LOAD_CHATS } from '../constants/actionTypes';
+import { ADD_CHAT, LOAD_CHATS, JOIN_CHAT } from '../constants/actionTypes';
 import io from 'socket.io-client';
 
 const host = window.location.protocol + '//' + window.location.hostname + ':3000';
 const initialState = {
   loaded: false,
   data: [],
-  socket: io(host)
+  socket: io(host),
+  activeChannel: {}
 };
 
 export default function chats(state = initialState, action) {
@@ -24,6 +25,11 @@ export default function chats(state = initialState, action) {
       return {...state,
         data: action.chats,
       };
+    case JOIN_CHAT: 
+      console.log('join chat');
+      return {...state,
+        activeChannel: action.chat,
+      }
     default:
       console.log('default');
       return state;

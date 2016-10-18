@@ -3,7 +3,7 @@ import { browserHistory, Router } from 'react-router'
 import { Provider, connect } from 'react-redux'
 import _ from 'lodash';
 
-import { addChat, loadChats } from '../actions/chats';
+import { addChat, loadChats, joinChat } from '../actions/chats';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
@@ -56,6 +56,18 @@ class AppContainer extends Component {
   closeAddChatModal = (event) => {
     this.setState({addChatModal: false});
   }
+
+  joinChat = (chat) => {
+    // TODO: add action to add active chat into reducer
+    this.props.chats.socket.emit('join_room', {
+      roomId: chat.roomId,
+    });
+    console.log('chat', chat);
+    this.props.joinChat(chat);
+    browserHistory.push('/chat');
+    console.log('join chat', chat.roomId);
+  }
+
   handleModalRoomNameChange = (event) => {
     console.log('render chats', this.props.chats);
     this.setState({chat: _.extend(this.state.chat, {roomName: event.target.value}) });
@@ -67,9 +79,12 @@ class AppContainer extends Component {
     this.setState({chat: _.extend(this.state.chat, {userLimit: event.target.value}) });
   }
   handleModalSubmit = () => {
-    const newChat = this.state.chat;
+    var newChat = this.state.chat;
     // this.handleChangeChat(newChat);
     this.props.chats.socket.emit('create_room', newChat);
+    this.props.chats.socket.on('create_room', (msg) => {
+      newChat.roomId = msg.roomId
+    });
     this.props.addChat(newChat);
     this.setState({chat: {
         user: '',
@@ -166,7 +181,7 @@ class AppContainer extends Component {
                 </div>
               </div>
               {this.props.chats.data.map(chat =>
-                <MenuItem>{chat.roomName}</MenuItem>
+                <MenuItem onTouchTap={() => this.joinChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
               )}
             </Drawer>
             {newChatModal}
@@ -189,7 +204,8 @@ function mapStateToProps(state) {
 
 const mapDispatch = {
   addChat,
-  loadChats
+  loadChats,
+  joinChat,
 };
 
 export default connect(mapStateToProps, mapDispatch)(AppContainer)
