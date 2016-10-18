@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { browserHistory, Router } from 'react-router'
 import { Provider, connect } from 'react-redux'
-import io from 'socket.io-client';
 import _ from 'lodash';
 
 import { addChat, loadChats } from '../actions/chats';
@@ -16,9 +15,6 @@ import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-
-const host = window.location.protocol + '//' + window.location.hostname + ':3000';
-const socket = io(host);
 
 class AppContainer extends Component {
   static propTypes = {
@@ -43,12 +39,12 @@ class AppContainer extends Component {
 
   componentDidMount(props) {
     var _self = this;
-    socket.on('list_rooms', function(msg) {
+    _self.props.chats.socket.on('list_rooms', function(msg) {
       console.log('listing rooms:');
       console.log(msg);
       _self.props.loadChats(msg);
     });
-    socket.emit('list_rooms');
+    _self.props.chats.socket.emit('list_rooms');
   }
 
   handleToggle = () => this.setState({addChatOpen: !this.state.addChatOpen});
@@ -73,7 +69,7 @@ class AppContainer extends Component {
   handleModalSubmit = () => {
     const newChat = this.state.chat;
     // this.handleChangeChat(newChat);
-    socket.emit('create_room', newChat);
+    this.props.chats.socket.emit('create_room', newChat);
     this.props.addChat(newChat);
     this.setState({chat: {
         user: '',

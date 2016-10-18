@@ -1,8 +1,11 @@
 import { ADD_CHAT, LOAD_CHATS } from '../constants/actionTypes';
+import io from 'socket.io-client';
 
+const host = window.location.protocol + '//' + window.location.hostname + ':3000';
 const initialState = {
   loaded: false,
-  data: []
+  data: [],
+  socket: io(host)
 };
 
 export default function chats(state = initialState, action) {
