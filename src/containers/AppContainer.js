@@ -37,7 +37,7 @@ class AppContainer extends Component {
     };
   }
 
-  componentDidMount(props) {
+  componentDidMount() {
     var _self = this;
     _self.props.chats.socket.on('list_rooms', function(msg) {
       console.log('listing rooms:');
