@@ -23,6 +23,6 @@ export function showOthersTyping(msg) {
 
 export function showOthersTypingStopped() {
   return {
-    type: SHOW_OTHERS_TYPING,
+    type: SHOW_OTHERS_TYPING_STOPPED,
   }
 }
