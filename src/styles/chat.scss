@@ -45,27 +45,18 @@
 }
 
 .my-message {
-	.username-btn {
-		float: right!important;
-		background: Transparent;
-		background-repeat: no-repeat; 
-		border: none;
-		cursor: pointer; 
-		overflow: hidden;
-		outline: none;
-	}
 
 	.message {
 		float: right!important;
 		padding-right: 6px;
 		clear: both;
-		padding-top: 0.1em; 
 		margin-top: -1px;
 		padding-bottom: 0.3em;
 	}
 }
 
 .others-message {
+
 	.username-btn {
 		background: Transparent;
 		background-repeat: no-repeat; 
@@ -81,5 +72,27 @@
 		padding-top: 0.1em; 
 		margin-top: -1px;
 		padding-bottom: 0.3em;
+	}
+}
+
+.talk-bubble {
+	padding: 5px;
+	display: inline-block;
+	position: relative;
+	height: auto;
+	background-color: lightyellow;
+	max-width: 50%;
+}
+
+.round{
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+}
+
+li {
+	&.row {
+		margin-right: 0px !important;
+		margin-left: 0px !important;
 	}
 }

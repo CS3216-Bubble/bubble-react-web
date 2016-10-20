@@ -12,17 +12,21 @@ export default class MessageListItem extends Component {
     const { message, messageType } = this.props;
     if (messageType==="my-message") {
       return (
-        <li className={messageType}>
-          <div className="message">{message.message}</div>
+        <li className="my-message row">
+          <div className="talk-bubble round pull-right">
+            <div className="message">{message.message}</div>
+          </div>
         </li>
       );
     } else {
       return (
-        <li className={messageType}>
-          <span>
-            <b className="u" style={{color: '#66c'}}><button className="username-btn" onClick={this.handleClick.bind(this, message.userId)}>{message.userId}</button></b>
-          </span>
-          <div className="message">{message.message}</div>
+        <li className="others-message row">
+          <div className="talk-bubble round">
+            <span>
+              <b><button className="username-btn" onClick={this.handleClick.bind(this, message.userId)}>{message.userId}</button></b>
+            </span>
+            <div className="message">{message.message}</div>
+          </div>
         </li>
       );
     }
