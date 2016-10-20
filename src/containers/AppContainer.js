@@ -37,6 +37,17 @@ class AppContainer extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.chats.data !== nextProps.chats.data) {
+      clearTimeout(this.timeout);
+      this.startPoll();
+    }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
+  }
+
   componentDidMount() {
     var _self = this;
     _self.props.chats.socket.on('list_rooms', function(msg) {
@@ -48,6 +59,10 @@ class AppContainer extends Component {
     _self.props.chats.socket.on('create_room', function(msg) {
       _self.props.addChatRoomId(msg.roomId);
     })
+  }
+
+  startPoll = () => {
+    this.timeout = setTimeout(() => this.props.chats.socket.emit('list_rooms'), 2000);
   }
 
   handleToggle = () => this.setState({addChatOpen: !this.state.addChatOpen});
