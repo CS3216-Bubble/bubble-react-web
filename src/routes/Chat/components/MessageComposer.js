@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { FormControl } from 'react-bootstrap';
+import { postMessage } from '../../../actions/chat';
 
 export default class MessageComposer extends Component {
 
   static propTypes = {
     activeChannel: PropTypes.object.isRequired,
-    socket: PropTypes.object.isRequired
+    socket: PropTypes.object.isRequired,
+    postMessage: PropTypes.func.isRequired,
   };
   constructor(props, context) {
     super(props, context);
@@ -15,17 +17,17 @@ export default class MessageComposer extends Component {
     };
   }
   handleSubmit(event) {
-    const { socket, activeChannel} = this.props;
+    const { socket, activeChannel, postMessage} = this.props;
     const message = event.target.value.trim();
     if (event.which === 13) {
       event.preventDefault();
-
       // TODO: make the userId retrievable from backend when persisting user
       var newMessage = {
         roomId: this.props.activeChannel.roomId,
         message
       };
       socket.emit('add_message', newMessage);
+      postMessage(newMessage);
       console.log('ADDED', this.state.text);
       socket.emit('stop_typing', { roomId: activeChannel.roomId });
       this.setState({ text: '', typing: false });

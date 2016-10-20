@@ -47,7 +47,7 @@ class Chat extends Component {
 
 
   render() {
-    const { socket, activeChannel } = this.props; 
+    const { socket, activeChannel, postMessage } = this.props; 
 
     const generateMessages = () => {
       const messageCells = [];
@@ -69,7 +69,7 @@ class Chat extends Component {
           <ul style={{wordWrap: 'break-word', margin: '0', overflowY: 'auto', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1'}} ref="messageList">
             { generateMessages() }
           </ul>
-          <MessageComposer socket={socket} activeChannel={activeChannel} />
+          <MessageComposer socket={socket} activeChannel={activeChannel} postMessage={postMessage}/>
         </div>
         <footer style={{fontSize: '1em', position: 'fixed', bottom: '0.2em', left: '21.5rem', color: '#000000', width: '100%', opacity: '0.5'}}>
           {this.props.chat.typer !== '' &&
