@@ -3,7 +3,7 @@ import { browserHistory, Router } from 'react-router'
 import { Provider, connect } from 'react-redux'
 import _ from 'lodash';
 
-import { addChat, loadChats, joinChat } from '../actions/chats';
+import { addChat, loadChats, joinChat, addChatRoomId } from '../actions/chats';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
@@ -45,6 +45,9 @@ class AppContainer extends Component {
       _self.props.loadChats(msg);
     });
     _self.props.chats.socket.emit('list_rooms');
+    _self.props.chats.socket.on('create_room', function(msg) {
+      _self.props.addChatRoomId(msg.roomId);
+    })
   }
 
   handleToggle = () => this.setState({addChatOpen: !this.state.addChatOpen});
@@ -58,7 +61,11 @@ class AppContainer extends Component {
   }
 
   joinChat = (chat) => {
-    // TODO: add action to add active chat into reducer
+    // Do nothing if user clicks active chat
+    if (this.props.chats.activeChannel.roomId === chat.roomId) {
+      return;
+    }
+
     this.props.chats.socket.emit('join_room', {
       roomId: chat.roomId,
     });
@@ -207,6 +214,7 @@ const mapDispatch = {
   addChat,
   loadChats,
   joinChat,
+  addChatRoomId,
 };
 
 export default connect(mapStateToProps, mapDispatch)(AppContainer)

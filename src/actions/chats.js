@@ -1,4 +1,4 @@
-import { ADD_CHAT, LOAD_CHATS, JOIN_CHAT } from '../constants/actionTypes';
+import { ADD_CHAT, LOAD_CHATS, JOIN_CHAT, ADD_CHAT_ROOMID } from '../constants/actionTypes';
 import { browserHistory } from 'react-router';
 import fetch from 'isomorphic-fetch';
 
@@ -20,5 +20,12 @@ export function joinChat(chat) {
   return {
     type: JOIN_CHAT,
     chat,
+  }
+}
+
+export function addChatRoomId(roomId) {
+  return {
+    type: ADD_CHAT_ROOMID,
+    roomId,
   }
 }

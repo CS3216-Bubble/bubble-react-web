@@ -1,4 +1,4 @@
-import { ADD_INCOMING_MESSAGE, POST_MESSAGE, SHOW_OTHERS_TYPING, SHOW_OTHERS_TYPING_STOPPED } from '../constants/actionTypes';
+import { ADD_CHAT, JOIN_CHAT, LEAVE_CHAT, ADD_INCOMING_MESSAGE, POST_MESSAGE, SHOW_OTHERS_TYPING, SHOW_OTHERS_TYPING_STOPPED } from '../constants/actionTypes';
 import _ from 'lodash';
 
 const initialState = {
@@ -9,6 +9,15 @@ const initialState = {
 
 export default function chat(state = initialState, action) {
   switch (action.type) {
+    case ADD_CHAT:
+    case JOIN_CHAT:
+      return {...state,
+        messages: [],
+      }
+    case LEAVE_CHAT:
+      return {...state,
+        messages: [],
+      }
     case ADD_INCOMING_MESSAGE:
       return {...state,
         messages: _.concat(state.messages, action.msg)
