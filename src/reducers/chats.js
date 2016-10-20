@@ -32,8 +32,8 @@ export default function chats(state = initialState, action) {
       // TODO: support changes in userId
       if (state.activeChannel.roomId) {
         state.socket.emit('exit_room', {
-          roomId: activeChannel.roomId,
-          userId: socket.id,
+          roomId: state.activeChannel.roomId,
+          userId: state.socket.id,
         });
       }
 
@@ -45,8 +45,8 @@ export default function chats(state = initialState, action) {
       // TODO: support changes in userId
       if (state.activeChannel.roomId) {
         state.socket.emit('exit_room', {
-          roomId: activeChannel.roomId,
-          userId: socket.id,
+          roomId: state.activeChannel.roomId,
+          userId: state.socket.id,
         });
       }
 
