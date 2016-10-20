@@ -50,6 +50,12 @@ class Chat extends Component {
   render() {
     const { socket, activeChannel, postMessage } = this.props; 
 
+    const bodyStyle ={
+      height: `${0.9 * (window.innerHeight - 72 - 64 - 10)}px`
+    };
+    const footerStyle = {
+      height: `${0.1 * (window.innerHeight - 72 - 64 - 10)}px`
+    };
     const generateMessages = () => {
       const messageCells = [];
       console.log('generating changes');
@@ -67,18 +73,18 @@ class Chat extends Component {
     return (
       <div style={{padding: '0', height: '100%', width: '100%', display: '-webkit-box'}}>
         <div className="chat-main">
-          <header className="chat-title">
-            <div>
+          <header className="chat-title-div">
+            <span className="chat-title">
             {activeChannel.roomName}
-            </div>
+            </span>
           </header>
           <Divider />
 
-          <ul className="chat-body">
+          <ul className="chat-body" style={bodyStyle} >
             { generateMessages() }
           </ul>
           
-          <div className="chat-footer">
+          <div className="chat-footer" style={footerStyle}>
             <MessageComposer socket={socket} activeChannel={activeChannel} postMessage={postMessage}/>
             <div style={{flexShrink:'0', fontSize: '1em', width: '100%', opacity: '0.5'}}>
               {this.props.chat.typer !== '' &&
