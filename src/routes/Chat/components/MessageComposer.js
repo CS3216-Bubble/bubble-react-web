@@ -29,7 +29,6 @@ export default class MessageComposer extends Component {
       };
       socket.emit('add_message', newMessage);
       postMessage(newMessage);
-      console.log('ADDED', this.state.text);
       socket.emit('stop_typing', { roomId: activeChannel.roomId });
       this.setState({ text: '', typing: false });
     }

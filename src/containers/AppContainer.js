@@ -53,8 +53,6 @@ class AppContainer extends Component {
   componentDidMount() {
     var _self = this;
     _self.props.chats.socket.on('list_rooms', function(msg) {
-      console.log('listing rooms:');
-      console.log(msg);
       _self.props.loadChats(msg);
     });
     _self.props.chats.socket.emit('list_rooms');
@@ -86,14 +84,11 @@ class AppContainer extends Component {
     this.props.chats.socket.emit('join_room', {
       roomId: chat.roomId,
     });
-    console.log('chat', chat);
     this.props.joinChat(chat);
     browserHistory.push('/chat');
-    console.log('join chat', chat.roomId);
   }
 
   handleModalRoomNameChange = (event) => {
-    console.log('render chats', this.props.chats);
     this.setState({chat: _.extend(this.state.chat, {roomName: event.target.value}) });
   }
   handleModalRoomDescriptionChange = (event) => {
@@ -104,8 +99,6 @@ class AppContainer extends Component {
   }
   handleModalSubmit = () => {
     var newChat = this.state.chat;
-    // this.handleChangeChat(newChat);
-    console.log('new chat', newChat);
     this.props.chats.socket.emit('create_room', newChat);
     this.props.chats.socket.on('create_room', (msg) => {
       newChat.roomId = msg.roomId
@@ -160,7 +153,6 @@ class AppContainer extends Component {
       this.state.categories.map( (cat, i) => {
         checkboxes.push(<Checkbox key={i} label={cat} className="checkbox" onCheck={ (event, bool) => checkboxChecked(bool, cat)} />)
       });
-      console.log('checkboxes', this.state.categories);
       return checkboxes;
     }
 

@@ -15,7 +15,6 @@ class Chat extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      // targetedUser: ''
       messages: [],
       typer: ''
     }
@@ -24,18 +23,12 @@ class Chat extends Component {
     const { socket } = this.props;
     // TODO: LOAD MESSAGES socket.on(load_messages), socket.emit(load_messages)
     socket.on('add_message', (msg) => {
-      // this.setState( {messages: _.concat(this.state.messages, msg)} );
       this.props.addIncomingMessage(msg);
-      console.log('someone typedd ', msg);
-      console.log('messages', this.props.chat.messages);
     });
     socket.on('typing', (msg) => {
-      console.log(msg.userId,' someone is typing');
       this.props.showOthersTyping(msg);
-      // this.setState( {typer: msg.userId} );
     });
     socket.on('stop_typing', user =>
-      // this.setState( {typer: ''} );
       this.props.showOthersTypingStopped()
     );
   }
@@ -56,7 +49,6 @@ class Chat extends Component {
     };
     const generateMessages = () => {
       const messageCells = [];
-      console.log('generating changes');
       this.props.chat.messages.map( (message, i) => {
           if (message.userId === socket.id) {
             messageCells.push(<MessageListItem key={i} messageType="my-message" handleClickOnUser={::this.handleClickOnUser} message={message}/>)
