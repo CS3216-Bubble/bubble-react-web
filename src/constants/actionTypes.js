@@ -2,6 +2,7 @@
 export const ADD_CHAT = 'ADD_CHAT';
 export const LOAD_CHATS = 'LOAD_CHATS';
 export const JOIN_CHAT = 'JOIN_CHAT';
+export const LEAVE_CHAT = 'LEAVE_CHAT';
 
 // CHAT
 export const ADD_INCOMING_MESSAGE = 'ADD_INCOMING_MESSAGE';

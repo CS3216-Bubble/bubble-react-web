@@ -1,4 +1,4 @@
-import { ADD_CHAT, LOAD_CHATS, JOIN_CHAT } from '../constants/actionTypes';
+import { ADD_CHAT, LOAD_CHATS, JOIN_CHAT, LEAVE_CHAT } from '../constants/actionTypes';
 import io from 'socket.io-client';
 
 const host = window.location.protocol + '//' + window.location.hostname + ':3000';
@@ -27,9 +27,32 @@ export default function chats(state = initialState, action) {
       };
     case JOIN_CHAT: 
       console.log('join chat');
+
+      // leave any chat before joining
+      // TODO: support changes in userId
+      if (state.activeChannel.roomId) {
+        state.socket.emit('exit_room', {
+          roomId: activeChannel.roomId,
+          userId: socket.id,
+        });
+      }
+
       return {...state,
         activeChannel: action.chat,
+      };
+    case LEAVE_CHAT:
+
+      // TODO: support changes in userId
+      if (state.activeChannel.roomId) {
+        state.socket.emit('exit_room', {
+          roomId: activeChannel.roomId,
+          userId: socket.id,
+        });
       }
+
+      return {...state,
+        activeChannel: {},
+      };
     default:
       console.log('default');
       return state;
