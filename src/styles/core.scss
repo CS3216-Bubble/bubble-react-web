@@ -1,6 +1,7 @@
 @import 'base';
 @import '~normalize.css/normalize';
 @import 'drawer';
+@import 'chat';
 
 // Some best-practice CSS that's useful for most apps
 // Just remove them if they're not what you want
@@ -30,3 +31,9 @@ span {
   padding-left: 25px;
 }
 
+// TODO: change the main size when nav bar shows and hide
+// depending on window size
+.div-main {
+	padding-left: 256px;
+	height: 100%;
+}

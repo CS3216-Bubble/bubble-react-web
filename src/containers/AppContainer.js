@@ -155,6 +155,7 @@ class AppContainer extends Component {
       </div>
     );
 
+    // TODO: make the nav bar reactive, smaller screen should hide nav bar and change size of chat
     return (
       <Provider store={store}>
         <MuiThemeProvider>
@@ -185,7 +186,7 @@ class AppContainer extends Component {
               )}
             </Drawer>
             {newChatModal}
-            <div style={{ height: '100%' }}>
+            <div className="div-main">
               <Router history={browserHistory} children={routes} />
             </div>
           </div>

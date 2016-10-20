@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import MessageComposer from './MessageComposer';
 import MessageListItem from './MessageListItem';
 import TypingListItem from './TypingListItem';
+import Divider from 'material-ui/Divider';
 import { addIncomingMessage, postMessage, showOthersTyping, showOthersTypingStopped } from '../../../actions/chat'
 import { Modal, DropdownButton, MenuItem, Button, Navbar, NavDropdown, Nav, NavItem } from 'react-bootstrap';
 
@@ -59,12 +60,13 @@ class Chat extends Component {
     };
 
     return (
-      <div style={{margin: '30em', padding: '0', height: '100%', width: '100%', display: '-webkit-box'}}>
-        <div className="main">
-          <header style={{background: '#FFFFFF', color: 'black', flexGrow: '0', order: '0', fontSize: '2.3em', paddingLeft: '0.2em'}}>
+      <div style={{padding: '0', height: '100%', width: '100%', display: '-webkit-box'}}>
+        <div className="chat-main">
+          <header className="chat-title">
             <div>
             {activeChannel.roomName}
             </div>
+            <Divider />
           </header>
           <ul style={{wordWrap: 'break-word', margin: '0', overflowY: 'auto', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1'}} ref="messageList">
             { generateMessages() }
