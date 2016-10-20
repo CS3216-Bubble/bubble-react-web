@@ -2,20 +2,29 @@ import React, { Component, PropTypes } from 'react';
 
 export default class MessageListItem extends Component {
   static propTypes = {
-    message: PropTypes.object.isRequired
+    message: PropTypes.object.isRequired,
+    messageType: PropTypes.string.isRequired,
   };
   handleClick(user) {
     this.props.handleClickOnUser(user);
   }
   render() {
-    const { message } = this.props;
-    return (
-      <li>
-        <span>
-          <b style={{color: '#66c'}}><button style={{background: 'Transparent',backgroundRepeat: 'noRepeat', border: 'none', cursor: 'pointer', overflow: 'hidden', outline: 'none'}} onClick={this.handleClick.bind(this, message.userId)}>{message.userId}</button></b>
-        </span>
-        <div style={{clear: 'both', paddingTop: '0.1em', marginTop: '-1px', paddingBottom: '0.3em'}}>{message.message}</div>
-      </li>
-    );
+    const { message, messageType } = this.props;
+    if (messageType==="my-message") {
+      return (
+        <li className={messageType}>
+          <div className="message">{message.message}</div>
+        </li>
+      );
+    } else {
+      return (
+        <li className={messageType}>
+          <span>
+            <b className="u" style={{color: '#66c'}}><button className="username-btn" onClick={this.handleClick.bind(this, message.userId)}>{message.userId}</button></b>
+          </span>
+          <div className="message">{message.message}</div>
+        </li>
+      );
+    }
   }
 }

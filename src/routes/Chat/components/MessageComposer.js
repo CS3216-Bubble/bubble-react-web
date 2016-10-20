@@ -24,7 +24,8 @@ export default class MessageComposer extends Component {
       // TODO: make the userId retrievable from backend when persisting user
       var newMessage = {
         roomId: this.props.activeChannel.roomId,
-        message
+        message,
+        userId: socket.id
       };
       socket.emit('add_message', newMessage);
       postMessage(newMessage);

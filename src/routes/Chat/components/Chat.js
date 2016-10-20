@@ -53,8 +53,13 @@ class Chat extends Component {
     const generateMessages = () => {
       const messageCells = [];
       console.log('generating changes');
-      this.props.chat.messages.map( (message, i) =>
-        messageCells.push(<MessageListItem key={i} handleClickOnUser={::this.handleClickOnUser} message={message}/>)
+      this.props.chat.messages.map( (message, i) => {
+          if (message.userId === socket.id) {
+            messageCells.push(<MessageListItem key={i} messageType="my-message" handleClickOnUser={::this.handleClickOnUser} message={message}/>)
+          } else { 
+            messageCells.push(<MessageListItem key={i} messageType="others-message" handleClickOnUser={::this.handleClickOnUser} message={message}/>)
+          }
+        }
       )
       return messageCells;
     };
@@ -75,16 +80,16 @@ class Chat extends Component {
           
           <div className="chat-footer">
             <MessageComposer socket={socket} activeChannel={activeChannel} postMessage={postMessage}/>
-            <footer style={{flexShrink:'0', fontSize: '1em', width: '100%', opacity: '0.5'}}>
-            {this.props.chat.typer !== '' &&
-              <div className="pull-right">
-                <span>
-                  <TypingListItem username={this.props.chat.typer}/>
-                  <span> is typing</span>
-                </span>
-              </div>}
-          </footer>
-        </div>
+            <div style={{flexShrink:'0', fontSize: '1em', width: '100%', opacity: '0.5'}}>
+              {this.props.chat.typer !== '' &&
+                <div className="pull-right">
+                  <span>
+                    <TypingListItem username={this.props.chat.typer}/>
+                    <span> is typing</span>
+                  </span>
+                </div>}
+            </div>
+          </div>
         </div>
       </div>
     );
