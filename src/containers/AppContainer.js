@@ -15,6 +15,7 @@ import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import Checkbox from 'material-ui/Checkbox';
 
 class AppContainer extends Component {
   static propTypes = {
@@ -31,9 +32,10 @@ class AppContainer extends Component {
         roomName: '',
         roomDescription: '',
         userLimit: '',
-        categories: '',
+        categories: [],
       },
       addChatModal: false,
+      categories: ['Rant', 'Funny', 'Nolstagia', 'Relationship', 'Advice', 'School', 'Chit-chat'],
     };
   }
 
@@ -103,6 +105,7 @@ class AppContainer extends Component {
   handleModalSubmit = () => {
     var newChat = this.state.chat;
     // this.handleChangeChat(newChat);
+    console.log('new chat', newChat);
     this.props.chats.socket.emit('create_room', newChat);
     this.props.chats.socket.on('create_room', (msg) => {
       newChat.roomId = msg.roomId
@@ -113,7 +116,7 @@ class AppContainer extends Component {
         roomName: '',
         roomDescription: '',
         userLimit: '',
-        categories: '',
+        categories: [],
       }});
     this.closeAddChatModal();
   }
@@ -136,7 +139,8 @@ class AppContainer extends Component {
   }
 
   render () {
-    const { routes, store } = this.props
+    const { routes, store } = this.props;
+
     const newChatActions = [
       <FlatButton
         label="Cancel"
@@ -149,11 +153,30 @@ class AppContainer extends Component {
         disabled={this.validateChatName() === 'error' || 'true' && this.validateUserLimit() === 'error'}
         onTouchTap={this.handleModalSubmit}
       />,
-    ]
+    ];
+
+    const generateCheckboxes = () => {
+      const checkboxes = [];
+      this.state.categories.map( (cat, i) => {
+        checkboxes.push(<Checkbox key={i} label={cat} className="checkbox" onCheck={ (event, bool) => checkboxChecked(bool, cat)} />)
+      });
+      console.log('checkboxes', this.state.categories);
+      return checkboxes;
+    }
+
+    const checkboxChecked = (bool, cat) => {
+      if (bool) {
+        this.state.chat.categories.push(cat);
+      } else {
+        this.state.chat.categories.splice(this.state.chat.categories.indexOf(cat));
+      }
+    };
+
     const newChatModal = (
       <div>
         <Dialog open={this.state.addChatModal} title="Add New Chat" modal={true} actions={newChatActions}>
           <TextField
+            style={{width: `100%`}}
             errorText={this.validateChatName() === 'error' && 'A chat with that name already exists!'}
             onChange={::this.handleModalRoomNameChange}
             floatingLabelText="Name"
@@ -161,18 +184,23 @@ class AppContainer extends Component {
           />
           <br />
           <TextField
+            style={{width: `100%`}}
             floatingLabelText="Description"
             onChange={::this.handleModalRoomDescriptionChange}
             value={this.state.chat.roomDescription}
           />
           <br />
           <TextField
+            style={{width: `100%`}}
             errorText={this.validateUserLimit() === 'error' && 'User limit must be a number!'}
             floatingLabelText="User Limit"
             onChange={::this.handleModalUserLimitChange}
             value={this.state.chat.userLimit}
           />
           <br />
+          <div style={{width: `100%`}}>
+            { generateCheckboxes() }
+          </div>
         </Dialog>
       </div>
     );
