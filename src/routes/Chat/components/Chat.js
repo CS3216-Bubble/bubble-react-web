@@ -4,9 +4,7 @@ import MessageComposer from './MessageComposer';
 import MessageListItem from './MessageListItem';
 import TypingListItem from './TypingListItem';
 import Divider from 'material-ui/Divider';
-import { addIncomingMessage, postMessage, showOthersTyping, showOthersTypingStopped } from '../../../actions/chat'
-import { Modal, DropdownButton, MenuItem, Button, Navbar, NavDropdown, Nav, NavItem } from 'react-bootstrap';
-
+import { addIncomingMessage, postMessage, showOthersTyping, showOthersTypingStopped } from '../../../actions/chat';
 
 class Chat extends Component {
 
