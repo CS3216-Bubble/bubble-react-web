@@ -77,7 +77,7 @@ class Chat extends Component {
             <MessageComposer socket={socket} activeChannel={activeChannel} postMessage={postMessage}/>
             <footer style={{flexShrink:'0', fontSize: '1em', width: '100%', opacity: '0.5'}}>
             {this.props.chat.typer !== '' &&
-              <div>
+              <div className="pull-right">
                 <span>
                   <TypingListItem username={this.props.chat.typer}/>
                   <span> is typing</span>
