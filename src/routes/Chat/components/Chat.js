@@ -66,22 +66,26 @@ class Chat extends Component {
             <div>
             {activeChannel.roomName}
             </div>
-            <Divider />
           </header>
-          <ul style={{wordWrap: 'break-word', margin: '0', overflowY: 'auto', padding: '0', paddingBottom: '1em', flexGrow: '1', order: '1'}} ref="messageList">
+          <Divider />
+
+          <ul className="chat-body">
             { generateMessages() }
           </ul>
-          <MessageComposer socket={socket} activeChannel={activeChannel} postMessage={postMessage}/>
+          
+          <div className="chat-footer">
+            <MessageComposer socket={socket} activeChannel={activeChannel} postMessage={postMessage}/>
+            <footer style={{flexShrink:'0', fontSize: '1em', width: '100%', opacity: '0.5'}}>
+            {this.props.chat.typer !== '' &&
+              <div>
+                <span>
+                  <TypingListItem username={this.props.chat.typer}/>
+                  <span> is typing</span>
+                </span>
+              </div>}
+          </footer>
         </div>
-        <footer style={{fontSize: '1em', position: 'fixed', bottom: '0.2em', left: '21.5rem', color: '#000000', width: '100%', opacity: '0.5'}}>
-          {this.props.chat.typer !== '' &&
-            <div>
-              <span>
-                <TypingListItem username={this.props.chat.typer}/>
-                <span> is typing</span>
-              </span>
-            </div>}
-        </footer>
+        </div>
       </div>
     );
   }

@@ -47,6 +47,7 @@ export default class MessageComposer extends Component {
   }
   render() {
     return (
+      <div className="chat-message-field">
         <FormControl
           type="text"
           autoFocus="true"
@@ -55,6 +56,7 @@ export default class MessageComposer extends Component {
           onChange={::this.handleChange}
           onKeyDown={::this.handleSubmit}
         />
+      </div>
     );
   }
 }

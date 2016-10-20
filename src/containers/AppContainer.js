@@ -159,7 +159,7 @@ class AppContainer extends Component {
     return (
       <Provider store={store}>
         <MuiThemeProvider>
-          <div>
+          <div style={{height: `90%`}} >
             <AppBar
               title="Bubble"
               iconClassNameRight="muidocs-icon-navigation-expand-more"
