@@ -4,7 +4,7 @@ import MessageComposer from './MessageComposer';
 import MessageListItem from './MessageListItem';
 import TypingListItem from './TypingListItem';
 import Divider from 'material-ui/Divider';
-import { addIncomingMessage, postMessage, showOthersTyping, showOthersTypingStopped, newUserJoined } from '../../../actions/chat';
+import { addIncomingMessage, postMessage, showOthersTyping, showOthersTypingStopped, newUserJoined, userExit } from '../../../actions/chat';
 
 class Chat extends Component {
 
@@ -34,6 +34,9 @@ class Chat extends Component {
     socket.on('join_room', (msg) =>
       this.props.newUserJoined(msg)
     );
+    socket.on('exit_room', (msg) =>
+      this.props.userExit(msg)
+    );
   }
 
   handleClickOnUser(user) {
@@ -55,9 +58,9 @@ class Chat extends Component {
       this.props.chat.messages.map( (message, i) => {
           if (message.userId === socket.id) {
             messageCells.push(<MessageListItem key={i} messageType="my-message" handleClickOnUser={::this.handleClickOnUser} message={message}/>)
-          } else if (message.messageType === undefined) {
+          } else if (message.messageType === 'user-joined' || message.messageType==='user-exited') {
             // Not a message- user joined
-            messageCells.push(<MessageListItem key={i} messageType="user-joined" handleClickOnUser={::this.handleClickOnUser} message={message}/>)
+            messageCells.push(<MessageListItem key={i} messageType={message.messageType} handleClickOnUser={::this.handleClickOnUser} message={message}/>)
           } else { 
             messageCells.push(<MessageListItem key={i} messageType="others-message" handleClickOnUser={::this.handleClickOnUser} message={message}/>)
           }
@@ -111,6 +114,7 @@ const mapDispatch = {
   showOthersTyping,
   showOthersTypingStopped,
   newUserJoined,
+  userExit
 };
 
 export default connect(mapStateToProps, mapDispatch)(Chat)

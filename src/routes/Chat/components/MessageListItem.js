@@ -10,6 +10,7 @@ export default class MessageListItem extends Component {
   }
   render() {
     const { message, messageType } = this.props;
+    console.log('message', message);
     if (messageType==="my-message") {
       return (
         <li className="my-message row">
@@ -22,7 +23,15 @@ export default class MessageListItem extends Component {
         return (
           <li className="row">
             <div>
-              <div className="user-joined-message">{message.user} joined</div>
+              <div className="user-joined-message">{message.data.userId} joined</div>
+            </div>
+          </li>
+        );
+    } else if (messageType==='user-exited') {
+        return (
+          <li className="row">
+            <div>
+              <div className="user-exited-message">{message.data.userId} left</div>
             </div>
           </li>
         );
