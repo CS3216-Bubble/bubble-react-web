@@ -18,6 +18,14 @@ export default class MessageListItem extends Component {
           </div>
         </li>
       );
+    } else if (messageType==='user-joined') {
+        return (
+          <li className="row">
+            <div>
+              <div className="user-joined-message">{message.user} joined</div>
+            </div>
+          </li>
+        );
     } else {
       return (
         <li className="others-message row">

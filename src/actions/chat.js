@@ -1,4 +1,4 @@
-import { ADD_INCOMING_MESSAGE, POST_MESSAGE, SHOW_OTHERS_TYPING, SHOW_OTHERS_TYPING_STOPPED, LEAVE_CHAT } from '../constants/actionTypes';
+import { ADD_INCOMING_MESSAGE, POST_MESSAGE, SHOW_OTHERS_TYPING, SHOW_OTHERS_TYPING_STOPPED, LEAVE_CHAT, NEW_USER_JOINED } from '../constants/actionTypes';
 
 export function addIncomingMessage(msg) {
   return {
@@ -30,5 +30,13 @@ export function showOthersTypingStopped() {
 export function leaveChat() {
   return {
     type: LEAVE_CHAT,
+  }
+}
+
+export function newUserJoined(data) {
+  return {
+    type: NEW_USER_JOINED,
+    roomId: data.roomId,
+    user: data.userId,
   }
 }

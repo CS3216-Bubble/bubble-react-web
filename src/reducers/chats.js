@@ -1,4 +1,4 @@
-import { ADD_CHAT, ADD_CHAT_ROOMID, LOAD_CHATS, JOIN_CHAT, LEAVE_CHAT, NEW_CHAT } from '../constants/actionTypes';
+import { ADD_CHAT, ADD_CHAT_ROOMID, LOAD_CHATS, JOIN_CHAT, LEAVE_CHAT, NEW_CHAT, NEW_USER_JOINED } from '../constants/actionTypes';
 import io from 'socket.io-client';
 
 const host = window.location.protocol + '//' + window.location.hostname + ':3000';
