@@ -58,6 +58,7 @@ class AppContainer extends Component {
     _self.props.chats.socket.emit('list_rooms');
     _self.props.chats.socket.on('create_room', function(msg) {
       _self.props.addChatRoomId(msg.roomId);
+      browserHistory.push('/chat');
     })
   }
 
