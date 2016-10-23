@@ -1,12 +1,14 @@
-import { ADD_CHAT, ADD_CHAT_ROOMID, LOAD_CHATS, JOIN_CHAT, LEAVE_CHAT, NEW_CHAT, NEW_USER_JOINED } from '../constants/actionTypes';
+import { ADD_CHAT, ADD_CHAT_ROOMID, LOAD_CHATS, JOIN_CHAT, LEAVE_CHAT, NEW_CHAT, NEW_USER_JOINED, VIEW_CHAT } from '../constants/actionTypes';
 import io from 'socket.io-client';
+import { browserHistory, Router } from 'react-router'
 
 const host = window.location.protocol + '//' + window.location.hostname + ':3000';
 const initialState = {
   loaded: false,
   data: [],
   socket: io(host),
-  activeChannel: {}
+  activeChannel: {},
+  viewChat: {},
 };
 
 export default function chats(state = initialState, action) {
@@ -61,6 +63,10 @@ export default function chats(state = initialState, action) {
       return {...state,
         activeChannel: {},
       };
+    case VIEW_CHAT:
+      return {...state,
+        viewChat: action.chat,
+      }
     default:
       console.log('default');
       return state;

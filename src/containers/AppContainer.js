@@ -3,7 +3,7 @@ import { browserHistory, Router } from 'react-router'
 import { Provider, connect } from 'react-redux'
 import _ from 'lodash';
 
-import { addChat, loadChats, joinChat, addChatRoomId } from '../actions/chats';
+import { addChat, loadChats, viewChat, addChatRoomId } from '../actions/chats';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
@@ -60,6 +60,11 @@ class AppContainer extends Component {
       _self.props.addChatRoomId(msg.roomId);
       browserHistory.push('/chat');
     })
+    _self.props.chats.socket.on('view_room', function(chat) {
+      console.log('received chat', chat);
+      _self.props.viewChat(chat);
+      browserHistory.push('/view-chat');
+    })
   }
 
   startPoll = () => {
@@ -76,17 +81,16 @@ class AppContainer extends Component {
     this.setState({addChatModal: false});
   }
 
-  joinChat = (chat) => {
+  viewChat = (chat) => {
     // Do nothing if user clicks active chat
     if (this.props.chats.activeChannel.roomId === chat.roomId) {
       return;
     }
 
-    this.props.chats.socket.emit('join_room', {
+    this.props.chats.socket.emit('view_room', {
       roomId: chat.roomId,
+      userId: this.props.chats.socket.id,
     });
-    this.props.joinChat(chat);
-    browserHistory.push('/chat');
   }
 
   handleModalRoomNameChange = (event) => {
@@ -225,7 +229,7 @@ class AppContainer extends Component {
                 </div>
               </div>
               {this.props.chats.data.map(chat =>
-                <MenuItem onTouchTap={() => this.joinChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
+                <MenuItem onTouchTap={() => this.viewChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
               )}
             </Drawer>
             {newChatModal}
@@ -249,7 +253,7 @@ function mapStateToProps(state) {
 const mapDispatch = {
   addChat,
   loadChats,
-  joinChat,
+  viewChat,
   addChatRoomId,
 };
 

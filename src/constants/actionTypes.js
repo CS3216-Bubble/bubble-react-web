@@ -4,6 +4,7 @@ export const ADD_CHAT_ROOMID = 'ADD_CHAT_ROOMID';
 export const LOAD_CHATS = 'LOAD_CHATS';
 export const JOIN_CHAT = 'JOIN_CHAT';
 export const LEAVE_CHAT = 'LEAVE_CHAT';
+export const VIEW_CHAT = 'VIEW_CHAT';
 
 // CHAT
 export const ADD_INCOMING_MESSAGE = 'ADD_INCOMING_MESSAGE';
