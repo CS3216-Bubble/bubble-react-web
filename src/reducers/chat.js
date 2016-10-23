@@ -36,6 +36,11 @@ export default function chat(state = initialState, action) {
       }
     case NEW_USER_JOINED:
       const join_msg = _.assign(action, {messageType: 'user-joined'} );
+      if (action.data.messages) {
+        return {...state,
+          messages: _.concat(action.data.messages, join_msg)
+        };
+      }
       return {...state,
         messages: _.concat(state.messages, join_msg)
       };

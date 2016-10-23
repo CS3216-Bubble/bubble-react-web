@@ -34,9 +34,11 @@ class Chat extends Component {
     socket.on('join_room', (msg) =>
       this.props.newUserJoined(msg)
     );
-    socket.on('exit_room', (msg) =>
-      this.props.userExit(msg)
-    );
+    socket.on('exit_room', (msg) => {
+      if (msg) {
+        this.props.userExit(msg)
+      }
+    });
   }
 
   handleClickOnUser(user) {
