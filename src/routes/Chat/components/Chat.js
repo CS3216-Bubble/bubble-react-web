@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react';
+import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import MessageComposer from './MessageComposer';
 import MessageListItem from './MessageListItem';
 import TypingListItem from './TypingListItem';
 import Divider from 'material-ui/Divider';
-import { addIncomingMessage, postMessage, showOthersTyping, showOthersTypingStopped, newUserJoined, userExit } from '../../../actions/chat';
+import RaisedButton from 'material-ui/RaisedButton';
+import { addIncomingMessage, postMessage, showOthersTyping, showOthersTypingStopped, newUserJoined, userExit, leaveChat } from '../../../actions/chat';
 
 class Chat extends Component {
 
@@ -57,6 +59,11 @@ class Chat extends Component {
 
   }
 
+  leaveChat() {
+    this.props.leaveChat();
+    browserHistory.push('/');
+  }
+
 
   render() {
     const { socket, activeChannel, postMessage } = this.props; 
@@ -102,6 +109,7 @@ class Chat extends Component {
             <span className="chat-title">
             {activeChannel.roomName}
             </span>
+            <RaisedButton className="pull-right" label="Leave Room" onTouchTap={() => this.leaveChat()}/>
           </header>
           <Divider />
 
@@ -141,7 +149,8 @@ const mapDispatch = {
   showOthersTyping,
   showOthersTypingStopped,
   newUserJoined,
-  userExit
+  userExit,
+  leaveChat,
 };
 
 export default connect(mapStateToProps, mapDispatch)(Chat)
