@@ -40,8 +40,10 @@ class Chat extends Component {
       }
     });
   }
-
-
+  componentDidUpdate() {
+    const messageList = this.refs.messageList;
+    messageList.scrollTop = messageList.scrollHeight;
+  }
   componentWillUnmount() {
       // Remove all listeners that depends on the mount state of the component
       this.props.socket.off('add_message');
@@ -103,7 +105,7 @@ class Chat extends Component {
           </header>
           <Divider />
 
-          <ul className="chat-body" style={bodyStyle} >
+          <ul className="chat-body" style={bodyStyle} ref="messageList" >
             { generateMessages() }
             { generatePendingMessages() }
           </ul>
