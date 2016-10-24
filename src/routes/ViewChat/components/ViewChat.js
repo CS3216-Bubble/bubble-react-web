@@ -54,16 +54,16 @@ class ViewChat extends Component {
         <Divider />
         <div style={{ padding: '15px' }}>
           <div>
-            <span>Description</span>
-            <span>{this.props.chat.roomDescription}</span>
+            <div>Description</div>
+            <div>{this.props.chat.roomDescription}</div>
           </div>
           <div>
-            <span>Categories</span>
-            <span>{ generateCategoriesChips() }</span>
+            <div>Categories</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap'}}>{ generateCategoriesChips() }</div>
           </div>
           <div>
-            <span>Room Type</span>
-            <span>{this.props.chat.roomType}</span>
+            <div>Room Type</div>
+            <div>{this.props.chat.roomType}</div>
           </div>
           <div>
             <div>User Limit</div>
