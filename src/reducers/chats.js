@@ -36,22 +36,10 @@ export default function chats(state = initialState, action) {
         data: action.chats,
       };
     case JOIN_CHAT: 
-      console.log('join chat');
-
-      // leave any chat before joining
-      // TODO: support changes in userId
-      if (state.activeChannel.roomId) {
-        state.socket.emit('exit_room', {
-          roomId: state.activeChannel.roomId,
-          userId: state.socket.id,
-        });
-      }
-
       return {...state,
         activeChannel: action.chat,
       };
     case LEAVE_CHAT:
-
       // TODO: support changes in userId
       if (state.activeChannel.roomId) {
         state.socket.emit('exit_room', {
@@ -59,7 +47,6 @@ export default function chats(state = initialState, action) {
           userId: state.socket.id,
         });
       }
-
       return {...state,
         activeChannel: {},
       };
