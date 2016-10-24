@@ -41,6 +41,16 @@ class Chat extends Component {
     });
   }
 
+
+  componentWillUnmount() {
+      // Remove all listeners that depends on the mount state of the component
+      this.props.socket.off('add_message');
+      this.props.socket.off('typing');
+      this.props.socket.off('stop_typing');
+      this.props.socket.off('join_room');
+      this.props.socket.off('exit_room');
+  }
+
   handleClickOnUser(user) {
 
   }
@@ -63,7 +73,9 @@ class Chat extends Component {
             messageCells.push(<MessageListItem key={i} messageType="my-message" handleClickOnUser={::this.handleClickOnUser} message={message}/>)
           } else if (message.messageType === 'user-joined' || message.messageType==='user-exited') {
             // Not a message- user joined
-            messageCells.push(<MessageListItem key={i} messageType={message.messageType} handleClickOnUser={::this.handleClickOnUser} message={message}/>)
+            if (!(message.messageType==='user-exited' && message.data.userId === socket.id)) {
+              messageCells.push(<MessageListItem key={i} messageType={message.messageType} handleClickOnUser={::this.handleClickOnUser} message={message}/>)
+            }
           } else { 
             messageCells.push(<MessageListItem key={i} messageType="others-message" handleClickOnUser={::this.handleClickOnUser} message={message}/>)
           }
