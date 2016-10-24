@@ -98,6 +98,7 @@
     "json-loader": "^0.5.4",
     "lodash": "^4.16.4",
     "material-ui": "^0.16.0",
+    "moment": "^2.15.2",
     "node-sass": "^3.7.0",
     "normalize.css": "^4.1.1",
     "postcss-loader": "^0.13.0",

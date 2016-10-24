@@ -1,5 +1,6 @@
 import { ADD_CHAT, JOIN_CHAT, LEAVE_CHAT, ADD_INCOMING_MESSAGE, POST_MESSAGE, SHOW_OTHERS_TYPING, SHOW_OTHERS_TYPING_STOPPED, NEW_USER_JOINED, USER_EXIT } from '../constants/actionTypes';
 import _ from 'lodash';
+import Moment from 'moment';
 
 const initialState = {
   loaded: false,
@@ -45,7 +46,12 @@ export default function chat(state = initialState, action) {
       }
     case NEW_USER_JOINED:
       const join_msg = _.assign(action, {messageType: 'user-joined'} );
+      // Load existing messages to user just joined
       if (action.data.messages) {
+        // sort the messages according to time
+        action.data.messages.sort(function (left, right) {
+            return Moment.utc(left.createdAt).diff(Moment.utc(right.createdAt))
+        });
         return {...state,
           messages: _.concat(action.data.messages, join_msg)
         };
