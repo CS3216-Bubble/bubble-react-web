@@ -19,6 +19,14 @@ export default class MessageListItem extends Component {
           </div>
         </li>
       );
+    } else if (messageType==='pending') {
+        return (
+          <li className="my-message row">
+            <div className="talk-bubble round pull-right transparent-bg">
+              <div className="message">{ message.message || message.content }</div>
+            </div>
+          </li>
+        );
     } else if (messageType==='others-message') {
       return (
         <li className="others-message row">

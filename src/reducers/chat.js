@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 const initialState = {
   loaded: false,
+  pendingMessages: [],
   messages: [],
   typer: '',
 };
@@ -19,12 +20,20 @@ export default function chat(state = initialState, action) {
         messages: [],
       }
     case ADD_INCOMING_MESSAGE:
+      const removePendingIndex = _.findIndex(state.pendingMessages, function(m) {
+        console.log('content', action.msg.content);
+        return m.message === action.msg.content;
+      });
+      console.log('pre pending', state.pendingMessages);
+      state.pendingMessages.splice(removePendingIndex, 1);
+      console.log('post pending', state.pendingMessages);
       return {...state,
-        messages: _.concat(state.messages, action.msg)
+        messages: _.concat(state.messages, action.msg),
+        pendingMessages: state.pendingMessages,
       };
     case POST_MESSAGE:
       return {...state,
-        messages: _.concat(state.messages, action.msg)
+        pendingMessages: _.concat(state.pendingMessages, action.msg)
       };
     case SHOW_OTHERS_TYPING: 
       return {...state,

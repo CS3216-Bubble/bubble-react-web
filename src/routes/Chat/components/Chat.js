@@ -57,6 +57,7 @@ class Chat extends Component {
     };
     const generateMessages = () => {
       const messageCells = [];
+      console.log('enter generate messages');
       this.props.chat.messages.map( (message, i) => {
           if (message.userId === socket.id) {
             messageCells.push(<MessageListItem key={i} messageType="my-message" handleClickOnUser={::this.handleClickOnUser} message={message}/>)
@@ -69,6 +70,15 @@ class Chat extends Component {
         }
       )
       return messageCells;
+    };
+    const generatePendingMessages = () => {
+      console.log('enter pending message');
+      const pendingMessageCells = [];
+      this.props.chat.pendingMessages.map( (message, i) => {
+          pendingMessageCells.push(<MessageListItem key={i} messageType="pending" handleClickOnUser={::this.handleClickOnUser} message={message}/>)
+        }
+      )
+      return pendingMessageCells;
     };
 
     return (
@@ -83,6 +93,7 @@ class Chat extends Component {
 
           <ul className="chat-body" style={bodyStyle} >
             { generateMessages() }
+            { generatePendingMessages() }
           </ul>
           
           <div className="chat-footer" style={footerStyle}>
