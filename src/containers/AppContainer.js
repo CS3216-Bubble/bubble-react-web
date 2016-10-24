@@ -16,6 +16,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
+import Divider from 'material-ui/Divider';
 
 class AppContainer extends Component {
   static propTypes = {
@@ -119,9 +120,11 @@ class AppContainer extends Component {
     this.closeAddChatModal();
   }
   validateChatName = () => {
-    var chats = this.props.chats.data;
+    const chats = _.concat(this.props.chats.joinedRooms, this.props.chats.otherRooms);
     if (chats.filter(chat => {
-      return chat.roomName === this.state.chat.roomName.trim();
+      if (chat) {
+        return chat.roomName === this.state.chat.roomName.trim();
+      }
     }).length > 0) {
       return 'error';
     }
@@ -228,7 +231,14 @@ class AppContainer extends Component {
                   </div>
                 </div>
               </div>
-              {this.props.chats.data.map(chat =>
+              <h5>Joined Rooms</h5>
+              <Divider />
+              {this.props.chats.joinedRooms.map(chat =>
+                chat ? <MenuItem onTouchTap={() => this.viewChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem> : ''
+              )}
+              <h5>Other Rooms</h5>
+              <Divider />
+              {this.props.chats.otherRooms.map(chat =>
                 <MenuItem onTouchTap={() => this.viewChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
               )}
             </Drawer>
