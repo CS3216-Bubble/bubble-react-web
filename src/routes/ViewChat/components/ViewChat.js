@@ -77,7 +77,11 @@ class ViewChat extends Component {
             <div>Last Active</div>
             <div>{this.props.chat.lastActive}</div>
           </div>
-          <RaisedButton onTouchTap={() => this.joinChat(this.props.chat)} label="Join Chat" primary={true} fullWidth={true}/>
+          { this.props.chat.numUsers < this.props.chat.userLimit ? 
+              <RaisedButton onTouchTap={() => this.joinChat(this.props.chat)} label="Join Chat" primary={true} fullWidth={true}/>
+              :
+              <RaisedButton disabled={true} label="Room Full" style={{backgroundColor: `red`}} secondary={true} fullWidth={true}/>
+          }
         </div>
       </div>
     );
