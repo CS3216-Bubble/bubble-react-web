@@ -2,6 +2,7 @@
 @import '~normalize.css/normalize';
 @import 'drawer';
 @import 'chat';
+@import 'viewChat';
 
 // Some best-practice CSS that's useful for most apps
 // Just remove them if they're not what you want
@@ -43,7 +44,7 @@ span {
 }
 
 .chip {
-  margin: 4;
+  margin: 0px 5px 0px 0px !important;
 }
 
 [type=button]{

@@ -53,29 +53,31 @@ class ViewChat extends Component {
         </header>
         <Divider />
         <div style={{ padding: '15px' }}>
-          <div>
-            <div>Description</div>
-            <div>{this.props.chat.roomDescription}</div>
+          <div className="row">
+            <h4 className="col-md-3 right-label"><b>Description:</b></h4>
+            <h4 className="col-md-9">{this.props.chat.roomDescription}</h4>
           </div>
-          <div>
-            <div>Categories</div>
-            <div style={{ display: 'flex', flexWrap: 'wrap'}}>{ generateCategoriesChips() }</div>
+          <div className="row">
+            <h4 className="col-md-3 right-label"><b>Categories:</b></h4>
+            <div className="col-md-9" style={{ display: 'flex', flexWrap: 'wrap'}}>
+              { generateCategoriesChips() }
+            </div>
           </div>
-          <div>
-            <div>Room Type</div>
-            <div>{this.props.chat.roomType}</div>
+          <div className="row">
+            <h4 className="col-md-3 right-label"><b>Room Type:</b></h4>
+            <h4 className="col-md-9">{this.props.chat.roomType}</h4>
           </div>
-          <div>
-            <div>User Limit</div>
-            <div>{this.props.chat.userLimit}</div>
+          <div className="row">
+            <h4 className="col-md-3 right-label"><b>User Limit:</b></h4>
+            <h4 className="col-md-9">{this.props.chat.userLimit}</h4>
           </div>
-          <div>
-            <div>Number of Users</div>
-            <div>{this.props.chat.numUsers}</div>
+          <div className="row">
+            <h4 className="col-md-3 right-label"><b>Number of Users:</b></h4>
+            <h4 className="col-md-9">{this.props.chat.numUsers}</h4>
           </div>
-          <div>
-            <div>Last Active</div>
-            <div>{this.props.chat.lastActive}</div>
+          <div className="row">
+            <h4 className="col-md-3 right-label"><b>Last Active:</b></h4>
+            <h4 className="col-md-9">{this.props.chat.lastActive}</h4>
           </div>
           { this.props.chat.numUsers < this.props.chat.userLimit ? 
               <RaisedButton onTouchTap={() => this.joinChat(this.props.chat)} label="Join Chat" primary={true} fullWidth={true}/>
