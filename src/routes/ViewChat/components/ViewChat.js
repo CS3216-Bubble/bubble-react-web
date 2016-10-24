@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { joinChat } from '../../../actions/chats';
 import { browserHistory } from 'react-router'
+import Moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 import Chip from 'material-ui/Chip';
@@ -77,7 +78,7 @@ class ViewChat extends Component {
           </div>
           <div className="row">
             <h4 className="col-md-3 right-label"><b>Last Active:</b></h4>
-            <h4 className="col-md-9">{this.props.chat.lastActive}</h4>
+            <h4 className="col-md-9">{Moment(this.props.chat.lastActive).format('Do MMM YYYY, h:mm a')}</h4>
           </div>
           { this.props.chat.numUsers < this.props.chat.userLimit ? 
               <RaisedButton onTouchTap={() => this.joinChat(this.props.chat)} label="Join Chat" primary={true} fullWidth={true}/>
