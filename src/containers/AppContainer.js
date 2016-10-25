@@ -185,6 +185,52 @@ class AppContainer extends Component {
       return categoryChips;
     }
 
+    const generateFilteredJoinedRooms = () => {
+      const filters = Object.keys(_.pickBy(this.props.chats.categoryFilter));
+      const filteredJoinedRooms = this.props.chats.joinedRooms.filter((chat) => {
+        if (!chat) {
+          return false;
+        }
+
+        var pass = true;
+        filters.forEach( (filter) => {
+          if (chat.categories.indexOf(filter) < 0) {
+            pass = false;
+          }
+        });
+        return pass;
+      })
+
+      return filteredJoinedRooms.map(chat =>
+        <MenuItem onTouchTap={() => this.viewChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
+      )
+    }
+
+    const generateFilteredOtherRooms = () => {
+      const filters = Object.keys(_.pickBy(this.props.chats.categoryFilter));
+      console.log('filters', filters);
+      const filteredOtherRooms = this.props.chats.otherRooms.filter((chat) => {
+        if (!chat) {
+          return false;
+        }
+        
+        var pass = true;
+        filters.forEach( (filter) => {
+          console.log('ENTERED FILTER');
+          if (chat.categories.indexOf(filter) < 0) {
+            console.log('ENTERED FILTER FAIL');
+            pass = false;
+          }
+        });
+        console.log('ENTERED FILTER RESULT', chat.roomName, pass);
+        return pass;
+      })
+
+      return filteredOtherRooms.map(chat =>
+        <MenuItem onTouchTap={() => this.viewChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
+      )
+    }
+
     const checkboxChecked = (bool, cat) => {
       if (bool) {
         this.state.chat.categories.push(cat);
@@ -257,14 +303,10 @@ class AppContainer extends Component {
               </div>
               <h5>Joined Rooms</h5>
               <Divider />
-              {this.props.chats.joinedRooms.map(chat =>
-                chat ? <MenuItem onTouchTap={() => this.viewChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem> : ''
-              )}
+              {generateFilteredJoinedRooms()}
               <h5>Other Rooms</h5>
               <Divider />
-              {this.props.chats.otherRooms.map(chat =>
-                <MenuItem onTouchTap={() => this.viewChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
-              )}
+              {generateFilteredOtherRooms()}
             </Drawer>
             {newChatModal}
             <div className="div-main">
