@@ -2,8 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import { browserHistory, Router } from 'react-router'
 import { Provider, connect } from 'react-redux'
 import _ from 'lodash';
+import classNames from 'classnames';
 
-import { addChat, loadChats, viewChat, addChatRoomId } from '../actions/chats';
+
+import { addChat, loadChats, viewChat, addChatRoomId, toggleCategory } from '../actions/chats';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
@@ -17,6 +19,7 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
 import Divider from 'material-ui/Divider';
+import Chip from 'material-ui/Chip';
 
 class AppContainer extends Component {
   static propTypes = {
@@ -37,6 +40,15 @@ class AppContainer extends Component {
       },
       addChatModal: false,
       categories: ['Rant', 'Funny', 'Nolstagia', 'Relationship', 'Advice', 'School', 'Chit-chat'],
+      categoryFilter: {
+        'Rant': false,
+        'Funny': false,
+        'Nolstagia': false,
+        'Relationship': false,
+        'Advice': false,
+        'School': false,
+        'Chit-chat': false,
+      },
     };
   }
 
@@ -164,6 +176,15 @@ class AppContainer extends Component {
       return checkboxes;
     }
 
+    const generateCategoriesChips = () => {
+      const categoryChips = [];
+      this.state.categories.map( (cat, i) => {
+        categoryChips.push(<Chip onTouchTap={() => this.props.toggleCategory(cat)} className={classNames('chip', {'enabled-chip': this.props.chats.categoryFilter[cat]})} key={i} >{cat}</Chip>)
+      });
+
+      return categoryChips;
+    }
+
     const checkboxChecked = (bool, cat) => {
       if (bool) {
         this.state.chat.categories.push(cat);
@@ -231,6 +252,9 @@ class AppContainer extends Component {
                   </div>
                 </div>
               </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap'}}>
+                {generateCategoriesChips()}
+              </div>
               <h5>Joined Rooms</h5>
               <Divider />
               {this.props.chats.joinedRooms.map(chat =>
@@ -265,6 +289,7 @@ const mapDispatch = {
   loadChats,
   viewChat,
   addChatRoomId,
+  toggleCategory,
 };
 
 export default connect(mapStateToProps, mapDispatch)(AppContainer)

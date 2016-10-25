@@ -1,4 +1,4 @@
-import { ADD_CHAT, ADD_CHAT_ROOMID, LOAD_CHATS, JOIN_CHAT, LEAVE_CHAT, NEW_CHAT, NEW_USER_JOINED, VIEW_CHAT} from '../constants/actionTypes';
+import { ADD_CHAT, ADD_CHAT_ROOMID, LOAD_CHATS, JOIN_CHAT, LEAVE_CHAT, NEW_CHAT, NEW_USER_JOINED, VIEW_CHAT, TOGGLE_CATEGORY} from '../constants/actionTypes';
 import io from 'socket.io-client';
 import { browserHistory, Router } from 'react-router'
 
@@ -10,6 +10,15 @@ const initialState = {
   viewChat: {},
   joinedRooms: [],
   otherRooms: [],
+  categoryFilter: {
+    'Rant': false,
+    'Funny': false,
+    'Nolstagia': false,
+    'Relationship': false,
+    'Advice': false,
+    'School': false,
+    'Chit-chat': false,
+  },
 };
 
 export default function chats(state = initialState, action) {
@@ -71,6 +80,13 @@ export default function chats(state = initialState, action) {
       }
       return {...state,
         messages: _.concat(state.messages, join_msg)
+      };
+    case TOGGLE_CATEGORY:
+      const tempFilter = _.cloneDeep(state.categoryFilter);
+      tempFilter[action.category] = !tempFilter[action.category];
+      console.log('LOOK HERE', tempFilter);
+      return {...state,
+        categoryFilter: tempFilter,
       };
     default:
       console.log('default');
