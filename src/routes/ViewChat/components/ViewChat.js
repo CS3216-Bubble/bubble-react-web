@@ -18,7 +18,11 @@ class ViewChat extends Component {
     super(props, context);
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    if (!this.props.chat.roomId) {
+      console.log('entered');
+      browserHistory.push('/');
+    }
   }
 
   joinChat = (chat) => {
@@ -39,9 +43,11 @@ class ViewChat extends Component {
     console.log('chat', this.props.chat);
     const generateCategoriesChips = () => {
       const categoryChips = [];
-      this.props.chat.categories.map( (cat, i) => {
-        categoryChips.push(<Chip className="chip" key={i} >{cat}</Chip>)
-      });
+      if (this.props.chat.categories) {
+        this.props.chat.categories.map( (cat, i) => {
+          categoryChips.push(<Chip className="chip" key={i} >{cat}</Chip>)
+        });
+      }
       return categoryChips;
     }
 
