@@ -12,9 +12,12 @@ const initialState = {
 export default function chat(state = initialState, action) {
   switch (action.type) {
     case ADD_CHAT:
-    case JOIN_CHAT:
       return {...state,
         messages: [],
+      }
+    case JOIN_CHAT:
+      return {...state,
+        messages: action.chat.messages,
       }
     case LEAVE_CHAT:
       return {...state,
