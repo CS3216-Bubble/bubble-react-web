@@ -5,7 +5,7 @@ import _ from 'lodash';
 import classNames from 'classnames';
 
 
-import { addChat, loadChats, viewChat, addChatRoomId, toggleCategory } from '../actions/chats';
+import { addChat, loadChats, viewChat, joinChat, addChatRoomId, toggleCategory } from '../actions/chats';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
@@ -106,6 +106,15 @@ class AppContainer extends Component {
     });
   }
 
+  joinChat = (chat) => {
+    // Do nothing if user clicks active chat
+    if (this.props.chats.activeChannel.roomId === chat.roomId) {
+      return;
+    }
+    this.props.joinChat(chat);
+    browserHistory.push('/chat');
+  }
+
   handleModalRoomNameChange = (event) => {
     this.setState({chat: _.extend(this.state.chat, {roomName: event.target.value}) });
   }
@@ -202,7 +211,7 @@ class AppContainer extends Component {
       })
 
       return filteredJoinedRooms.map(chat =>
-        <MenuItem onTouchTap={() => this.viewChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
+        <MenuItem onTouchTap={() => this.joinChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
       )
     }
 
@@ -329,6 +338,7 @@ function mapStateToProps(state) {
 const mapDispatch = {
   addChat,
   loadChats,
+  joinChat,
   viewChat,
   addChatRoomId,
   toggleCategory,
