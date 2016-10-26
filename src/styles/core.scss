@@ -4,6 +4,10 @@
 @import 'chat';
 @import 'viewChat';
 
+$breakpoint: 500px;
+
+$chat-min-width: $breakpoint;
+
 // Some best-practice CSS that's useful for most apps
 // Just remove them if they're not what you want
 html {
@@ -35,8 +39,11 @@ span {
 // TODO: change the main size when nav bar shows and hide
 // depending on window size
 .div-main {
-	padding-left: 256px;
 	height: 100%;
+
+  @media (min-width: ($breakpoint + 1px)) {
+    padding-left: 256px;
+  }
 }
 
 .checkbox {
