@@ -61,12 +61,17 @@ export default function chats(state = initialState, action) {
           roomId: state.activeChannel.roomId,
           userId: state.socket.id,
         });
+
+        console.log('LEAVING ROOM')
+      
+        const oldChat = state.activeChannel;
+        return {...state,
+          activeChannel: {},
+          joinedRooms: state.joinedRooms.filter(room => room ? (room.roomId != oldChat.roomId) : false),
+          otherRooms: _.concat(state.otherRooms, oldChat),
+        };
       }
-      const tempRoom = _.difference(state.joinedRooms, activeChannel);
-      return {...state,
-        activeChannel: {},
-        joinedRooms: tempRoom,
-      };
+      return state;
     case VIEW_CHAT:
       return {...state,
         viewChat: action.chat,
