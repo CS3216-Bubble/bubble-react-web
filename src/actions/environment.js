@@ -1,4 +1,4 @@
-import * as types from '../constants/ActionTypes';
+import * as types from '../constants/actionTypes';
 
 //the environment code is borrowed from Andrew Ngu, https://github.com/andrewngu/sound-redux
 
