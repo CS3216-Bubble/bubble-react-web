@@ -4,7 +4,7 @@ import { Provider, connect } from 'react-redux'
 import _ from 'lodash';
 import classNames from 'classnames';
 
-
+import {initEnvironment} from '../actions/environment';
 import { addChat, loadChats, viewChat, joinChat, addChatRoomId, toggleCategory } from '../actions/chats';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -30,7 +30,7 @@ class AppContainer extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      sideBarOpen: true,
+      sideBarOpen: false,
       chat: {
         user: '',
         roomName: '',
@@ -65,6 +65,7 @@ class AppContainer extends Component {
 
   componentDidMount() {
     var _self = this;
+    _self.props.initEnvironment();
     _self.props.chats.socket.on('list_rooms', function(msg) {
       _self.props.loadChats(msg);
     });
@@ -82,6 +83,10 @@ class AppContainer extends Component {
 
   startPoll = () => {
     this.timeout = setTimeout(() => this.props.chats.socket.emit('list_rooms'), 2000);
+  }
+
+  handleSideBarToggle = () => {
+    this.setState({sideBarOpen: !this.state.sideBarOpen})
   }
 
   handleToggle = () => this.setState({addChatOpen: !this.state.addChatOpen});
@@ -161,6 +166,10 @@ class AppContainer extends Component {
   }
 
   render () {
+    const {screenHeight, isMobile, screenWidth} = this.props.environment;
+
+    // console.log(screenWidth, screenHeight);
+
     const { routes, store } = this.props;
 
     const newChatActions = [
@@ -289,8 +298,9 @@ class AppContainer extends Component {
             <AppBar
               title="Bubble"
               iconClassNameRight="muidocs-icon-navigation-expand-more"
+              onLeftIconButtonTouchTap={this.handleSideBarToggle}
             />
-            <Drawer open={this.state.sideBarOpen}>
+            <Drawer docked={this.props.environment.screenWidth > 500} open={this.props.environment.screenWidth > 500 || this.state.sideBarOpen } onRequestChange={(open) => this.setState({sideBarOpen: open})}>
               <div className="sidebar-header">Bubble</div> 
               <div className="row">
                 <div className="col-xs-8">
@@ -329,9 +339,10 @@ class AppContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  const { chats } = state;
+  const { chats, environment } = state;
   return {
     chats,
+    environment,
   }
 }
 
@@ -342,6 +353,7 @@ const mapDispatch = {
   viewChat,
   addChatRoomId,
   toggleCategory,
+  initEnvironment,
 };
 
 export default connect(mapStateToProps, mapDispatch)(AppContainer)
