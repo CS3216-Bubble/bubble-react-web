@@ -1,48 +1,48 @@
-import * as types from '../constants/actionTypes';
+import * as types from '../constants/actionTypes'
 
-export function addIncomingMessage(msg) {
+export function addIncomingMessage (msg) {
   return {
     type: types.ADD_INCOMING_MESSAGE,
-    msg,
+    msg
   }
 }
 
-export function postMessage(msg) {
+export function postMessage (msg) {
   return {
     type: types.POST_MESSAGE,
-    msg,
+    msg
   }
 }
 
-export function showOthersTyping(msg) {
+export function showOthersTyping (msg) {
   return {
     type: types.SHOW_OTHERS_TYPING,
-    msg,
+    msg
   }
 }
 
-export function showOthersTypingStopped() {
+export function showOthersTypingStopped () {
   return {
-    type: types.SHOW_OTHERS_TYPING_STOPPED,
+    type: types.SHOW_OTHERS_TYPING_STOPPED
   }
 }
 
-export function leaveChat() {
+export function leaveChat () {
   return {
-    type: types.LEAVE_CHAT,
+    type: types.LEAVE_CHAT
   }
 }
 
-export function newUserJoined(data) {
+export function newUserJoined (data) {
   return {
     type: types.NEW_USER_JOINED,
-    data,
+    data
   }
 }
 
-export function userExit(data) {
+export function userExit (data) {
   return {
     type: types.USER_EXIT,
-    data,
+    data
   }
 }

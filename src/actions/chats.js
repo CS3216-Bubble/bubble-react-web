@@ -1,45 +1,45 @@
-import * as types from '../constants/actionTypes';
-import { browserHistory } from 'react-router';
-import fetch from 'isomorphic-fetch';
+import * as types from '../constants/actionTypes'
+import { browserHistory } from 'react-router'
+import fetch from 'isomorphic-fetch'
 
-export function addChat(chat) {
+export function addChat (chat) {
   return {
     type: types.ADD_CHAT,
-    chat,
+    chat
   }
 }
 
-export function loadChats(chats) {
+export function loadChats (chats) {
   return {
     type: types.LOAD_CHATS,
-    chats,
+    chats
   }
 }
 
-export function joinChat(chat) {
+export function joinChat (chat) {
   return {
     type: types.JOIN_CHAT,
-    chat,
+    chat
   }
 }
 
-export function addChatRoomId(roomId) {
+export function addChatRoomId (roomId) {
   return {
     type: types.ADD_CHAT_ROOMID,
-    roomId,
+    roomId
   }
 }
 
-export function viewChat(chat) {
+export function viewChat (chat) {
   return {
     type: types.VIEW_CHAT,
-    chat,
+    chat
   }
 }
 
-export function toggleCategory(category) {
+export function toggleCategory (category) {
   return {
     type: types.TOGGLE_CATEGORY,
-    category,
+    category
   }
 }

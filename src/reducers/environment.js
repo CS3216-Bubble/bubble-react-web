@@ -1,4 +1,4 @@
-import * as types from '../constants/actionTypes';
+import * as types from '../constants/actionTypes'
 
 const initialState = {
   isMobile: false,
@@ -6,8 +6,8 @@ const initialState = {
   screenWidth: null
 }
 
-export default function environment(state = initialState, action) {
-  switch(action.type) {
+export default function environment (state = initialState, action) {
+  switch (action.type) {
     case types.CHANGE_IS_MOBILE:
       return {
         ...state, isMobile: action.isMobile
@@ -18,6 +18,6 @@ export default function environment(state = initialState, action) {
         ...state, screenHeight: action.screenHeight, screenWidth: action.screenWidth
       }
     default:
-      return state;
+      return state
   }
 }

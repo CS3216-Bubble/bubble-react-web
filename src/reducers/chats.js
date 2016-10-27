@@ -1,8 +1,8 @@
-import * as types from '../constants/actionTypes';
-import io from 'socket.io-client';
+import * as types from '../constants/actionTypes'
+import io from 'socket.io-client'
 import { browserHistory, Router } from 'react-router'
 
-const host = window.location.protocol + '//' + window.location.hostname + ':3000';
+const host = window.location.protocol + '//' + window.location.hostname + ':3000'
 const initialState = {
   loaded: false,
   socket: io(host),
@@ -17,78 +17,76 @@ const initialState = {
     'Relationship': false,
     'Advice': false,
     'School': false,
-    'Chit-chat': false,
-  },
-};
+    'Chit-chat': false
+  }
+}
 
-export default function chats(state = initialState, action) {
-
+export default function chats (state = initialState, action) {
   switch (action.type) {
     case types.ADD_CHAT:
-      const allRooms = _.concat(state.joinedRooms, state.otherRooms);
+      const allRooms = _.concat(state.joinedRooms, state.otherRooms)
       if (allRooms.filter(chat => chat.roomName === action.chat.roomName).length !== 0) {
-        return state;
+        return state
       }
-      return {...state,
+      return { ...state,
         joinedRooms: [...state.joinedRooms, action.chat],
-        activeChannel: action.chat,
-      };
+        activeChannel: action.chat
+      }
     case types.ADD_CHAT_ROOMID:
-      const tempAddChannel = state.activeChannel;
-      tempAddChannel.roomId = action.roomId;
-      return {...state,
-        activeChannel: tempAddChannel,
+      const tempAddChannel = state.activeChannel
+      tempAddChannel.roomId = action.roomId
+      return { ...state,
+        activeChannel: tempAddChannel
       }
     case types.LOAD_CHATS:
-      return {...state,
-        otherRooms: _.difference(action.chats, state.joinedRooms),
-      };
-    case types.JOIN_CHAT: 
+      return { ...state,
+        otherRooms: _.difference(action.chats, state.joinedRooms)
+      }
+    case types.JOIN_CHAT:
       // cant use lodash difference to remove other rooms because obj is different
-      return {...state,
+      return { ...state,
         activeChannel: action.chat,
         joinedRooms: _.concat(state.joinedRooms, action.chat),
-        otherRooms: state.otherRooms.filter(room => room.roomId != action.chat.roomId),
-      };
+        otherRooms: state.otherRooms.filter(room => room.roomId != action.chat.roomId)
+      }
     case types.LEAVE_CHAT:
       // TODO: support changes in userId
       if (state.activeChannel.roomId) {
         state.socket.emit('exit_room', {
           roomId: state.activeChannel.roomId,
-          userId: state.socket.id,
-        });
-      
-        const oldChat = state.activeChannel;
-        return {...state,
+          userId: state.socket.id
+        })
+
+        const oldChat = state.activeChannel
+        return { ...state,
           activeChannel: {},
           joinedRooms: state.joinedRooms.filter(room => room ? (room.roomId != oldChat.roomId) : false),
-          otherRooms: _.concat(state.otherRooms, oldChat),
-        };
+          otherRooms: _.concat(state.otherRooms, oldChat)
+        }
       }
-      return state;
+      return state
     case types.VIEW_CHAT:
-      return {...state,
-        viewChat: action.chat,
+      return { ...state,
+        viewChat: action.chat
       }
     case types.NEW_USER_JOINED:
       // user is added to rooms previously present (havent exit)
-     if (action.data.messages) {
-        return {...state,
-          joinedRooms: [...state.joinedRooms, action.chat],
-        };
+      if (action.data.messages) {
+        return { ...state,
+          joinedRooms: [...state.joinedRooms, action.chat]
+        }
       }
-      return {...state,
+      return { ...state,
         messages: _.concat(state.messages, join_msg)
-      };
+      }
     case types.TOGGLE_CATEGORY:
-      const tempFilter = _.cloneDeep(state.categoryFilter);
-      tempFilter[action.category] = !tempFilter[action.category];
-      return {...state,
-        categoryFilter: tempFilter,
-      };
+      const tempFilter = _.cloneDeep(state.categoryFilter)
+      tempFilter[action.category] = !tempFilter[action.category]
+      return { ...state,
+        categoryFilter: tempFilter
+      }
     default:
-      return state;
+      return state
   }
 }
-
 

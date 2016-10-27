@@ -1,41 +1,41 @@
-import axios from 'axios';
-import _ from 'lodash';
+import axios from 'axios'
+import _ from 'lodash'
 
-function makeRequest(request, accessToken) {
-  const req = _.cloneDeep(request);
+function makeRequest (request, accessToken) {
+  const req = _.cloneDeep(request)
   req.headers = {
-    'Content-Type': 'application/json',
-  };
+    'Content-Type': 'application/json'
+  }
 
   if (accessToken) {
-    req.headers.Authorization = accessToken;
+    req.headers.Authorization = accessToken
   }
 
   return axios(req)
-    .then((response) => response.data);
+    .then((response) => response.data)
 }
 
-export const API_REQUEST = Symbol('API_REQUEST');
-export const REQUEST = '_REQUEST';
-export const SUCCESS = '_SUCCESS';
-export const FAILURE = '_FAILURE';
+export const API_REQUEST = Symbol('API_REQUEST')
+export const REQUEST = '_REQUEST'
+export const SUCCESS = '_SUCCESS'
+export const FAILURE = '_FAILURE'
 
 export default (store) => (next) => (action) => {
-  const apiRequest = action[API_REQUEST];
+  const apiRequest = action[API_REQUEST]
   if (!apiRequest) {
     // Non-api request action
-    return next(action);
+    return next(action)
   }
 
   // type     is the base action type that will trigger
   // payload  is the request body to be processed
-  const { type, payload, meta } = apiRequest;
+  const { type, payload, meta } = apiRequest
 
   // swap the action content and structured api results
-  function constructActionWith(data) {
-    const finalAction = Object.assign({}, action, data);
-    delete finalAction[API_REQUEST];
-    return finalAction;
+  function constructActionWith (data) {
+    const finalAction = Object.assign({}, action, data)
+    delete finalAction[API_REQUEST]
+    return finalAction
   }
 
   // propagate the start of the request
@@ -43,13 +43,13 @@ export default (store) => (next) => (action) => {
     requestStatus: REQUEST,
     type: type + REQUEST,
     request: payload,
-    meta,
-  }));
+    meta
+  }))
 
   // get the access token from store
-  let accessToken = '';
+  let accessToken = ''
   if (_.get(store.getState(), 'user.accessToken')) {
-    accessToken = store.getState().user.accessToken;
+    accessToken = store.getState().user.accessToken
   }
 
   // propagate the response of the request
@@ -60,7 +60,7 @@ export default (store) => (next) => (action) => {
         type: type + SUCCESS,
         request: payload,
         meta,
-        response,
+        response
       })
       ),
       (error) => next(constructActionWith({
@@ -68,8 +68,8 @@ export default (store) => (next) => (action) => {
         type: type + FAILURE,
         request: payload,
         meta,
-        response: error,
+        response: error
       })
       )
-    );
-};
+    )
+}

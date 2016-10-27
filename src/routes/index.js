@@ -13,7 +13,7 @@ export const createRoutes = (store) => ({
   indexRoute  : Home,
   childRoutes : [
     ChatRoute(store),
-    ViewChatRoute(store),
+    ViewChatRoute(store)
   ]
 })
 
