@@ -74,33 +74,25 @@ class Chat extends Component {
     const footerStyle = {
       height: `${0.1 * (window.innerHeight - 72 - 64 - 10)}px`
     };
-    const generateMessages = () => {
-      const messageCells = [];
-      console.log('enter generate messages');
+    const generateMessages = () =>
       this.props.chat.messages.map( (message, i) => {
           if (message.userId === socket.id) {
-            messageCells.push(<MessageListItem key={i} messageType="my-message" handleClickOnUser={::this.handleClickOnUser} message={message}/>)
+            return <MessageListItem key={i} messageType="my-message" handleClickOnUser={::this.handleClickOnUser} message={message}/>
           } else if (message.messageType === 'user-joined' || message.messageType==='user-exited') {
             // Not a message- user joined
             if (!(message.messageType==='user-exited' && message.data.userId === socket.id)) {
-              messageCells.push(<MessageListItem key={i} messageType={message.messageType} handleClickOnUser={::this.handleClickOnUser} message={message}/>)
+              return <MessageListItem key={i} messageType={message.messageType} handleClickOnUser={::this.handleClickOnUser} message={message}/>
             }
           } else { 
-            messageCells.push(<MessageListItem key={i} messageType="others-message" handleClickOnUser={::this.handleClickOnUser} message={message}/>)
+            return <MessageListItem key={i} messageType="others-message" handleClickOnUser={::this.handleClickOnUser} message={message}/>
           }
         }
       )
-      return messageCells;
-    };
-    const generatePendingMessages = () => {
-      console.log('enter pending message');
-      const pendingMessageCells = [];
-      this.props.chat.pendingMessages.map( (message, i) => {
-          pendingMessageCells.push(<MessageListItem key={i} messageType="pending" handleClickOnUser={::this.handleClickOnUser} message={message}/>)
-        }
+    
+    const generatePendingMessages = () => 
+      this.props.chat.pendingMessages.map( (message, i) => 
+        <MessageListItem key={i} messageType="pending" handleClickOnUser={::this.handleClickOnUser} message={message}/>
       )
-      return pendingMessageCells;
-    };
 
     return (
       <div style={{padding: '0', height: '100%', width: '100%', display: '-webkit-box'}}>

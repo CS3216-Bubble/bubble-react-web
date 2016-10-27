@@ -1,45 +1,45 @@
-import { ADD_CHAT, LOAD_CHATS, JOIN_CHAT, ADD_CHAT_ROOMID, VIEW_CHAT, TOGGLE_CATEGORY } from '../constants/actionTypes';
+import * as types from '../constants/actionTypes';
 import { browserHistory } from 'react-router';
 import fetch from 'isomorphic-fetch';
 
 export function addChat(chat) {
   return {
-    type: ADD_CHAT,
+    type: types.ADD_CHAT,
     chat,
   }
 }
 
 export function loadChats(chats) {
   return {
-    type: LOAD_CHATS,
+    type: types.LOAD_CHATS,
     chats,
   }
 }
 
 export function joinChat(chat) {
   return {
-    type: JOIN_CHAT,
+    type: types.JOIN_CHAT,
     chat,
   }
 }
 
 export function addChatRoomId(roomId) {
   return {
-    type: ADD_CHAT_ROOMID,
+    type: types.ADD_CHAT_ROOMID,
     roomId,
   }
 }
 
 export function viewChat(chat) {
   return {
-    type: VIEW_CHAT,
+    type: types.VIEW_CHAT,
     chat,
   }
 }
 
 export function toggleCategory(category) {
   return {
-    type: TOGGLE_CATEGORY,
+    type: types.TOGGLE_CATEGORY,
     category,
   }
 }

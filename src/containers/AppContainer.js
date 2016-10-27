@@ -75,7 +75,6 @@ class AppContainer extends Component {
       browserHistory.push('/chat');
     })
     _self.props.chats.socket.on('view_room', function(chat) {
-      console.log('received chat', chat);
       _self.props.viewChat(chat);
       browserHistory.push('/view-chat');
     })
@@ -186,22 +185,17 @@ class AppContainer extends Component {
       />,
     ];
 
-    const generateCheckboxes = () => {
-      const checkboxes = [];
-      this.state.categories.map( (cat, i) => {
-        checkboxes.push(<Checkbox key={i} label={cat} className="checkbox" onCheck={ (event, bool) => checkboxChecked(bool, cat)} />)
-      });
-      return checkboxes;
-    }
+    const generateCheckboxes = () => 
+      this.state.categories.map( (cat, i) => 
+        <Checkbox key={i} label={cat} className="checkbox" onCheck={ (event, bool) => checkboxChecked(bool, cat)} />
+      );
+    
 
-    const generateCategoriesChips = () => {
-      const categoryChips = [];
-      this.state.categories.map( (cat, i) => {
-        categoryChips.push(<Chip onTouchTap={() => this.props.toggleCategory(cat)} className={classNames('chip', {'enabled-chip': this.props.chats.categoryFilter[cat]})} key={i} >{cat}</Chip>)
-      });
-
-      return categoryChips;
-    }
+    const generateCategoriesChips = () => 
+      this.state.categories.map( (cat, i) => 
+        <Chip onTouchTap={() => this.props.toggleCategory(cat)} className={classNames('chip', {'enabled-chip': this.props.chats.categoryFilter[cat]})} key={i} >{cat}</Chip>
+      );
+    
 
     const generateFilteredJoinedRooms = () => {
       const filters = Object.keys(_.pickBy(this.props.chats.categoryFilter));
@@ -226,7 +220,6 @@ class AppContainer extends Component {
 
     const generateFilteredOtherRooms = () => {
       const filters = Object.keys(_.pickBy(this.props.chats.categoryFilter));
-      console.log('filters', filters);
       const filteredOtherRooms = this.props.chats.otherRooms.filter((chat) => {
         if (!chat) {
           return false;
@@ -234,13 +227,10 @@ class AppContainer extends Component {
         
         var pass = true;
         filters.forEach( (filter) => {
-          console.log('ENTERED FILTER');
           if (chat.categories.indexOf(filter) < 0) {
-            console.log('ENTERED FILTER FAIL');
             pass = false;
           }
         });
-        console.log('ENTERED FILTER RESULT', chat.roomName, pass);
         return pass;
       })
 

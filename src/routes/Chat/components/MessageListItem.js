@@ -10,7 +10,6 @@ export default class MessageListItem extends Component {
   }
   render() {
     const { message, messageType } = this.props;
-    console.log('message', message);
     if (messageType==="my-message") {
       return (
         <li className="my-message row">
