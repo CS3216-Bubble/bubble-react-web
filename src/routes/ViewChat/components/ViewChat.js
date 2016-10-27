@@ -20,7 +20,6 @@ class ViewChat extends Component {
 
   componentWillMount() {
     if (!this.props.chat.roomId) {
-      console.log('entered');
       browserHistory.push('/');
     }
   }
@@ -40,15 +39,13 @@ class ViewChat extends Component {
 
 
   render() {
-    console.log('chat', this.props.chat);
     const generateCategoriesChips = () => {
-      const categoryChips = [];
       if (this.props.chat.categories) {
-        this.props.chat.categories.map( (cat, i) => {
-          categoryChips.push(<Chip className="chip" key={i} >{cat}</Chip>)
-        });
+        return this.props.chat.categories.map( (cat, i) => 
+          <Chip className="chip" key={i} >{cat}</Chip>
+        );
       }
-      return categoryChips;
+      return;
     }
 
     return (
