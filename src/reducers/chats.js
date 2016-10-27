@@ -1,4 +1,4 @@
-import { ADD_CHAT, ADD_CHAT_ROOMID, LOAD_CHATS, JOIN_CHAT, LEAVE_CHAT, NEW_CHAT, NEW_USER_JOINED, VIEW_CHAT, TOGGLE_CATEGORY} from '../constants/actionTypes';
+import * as types from '../constants/actionTypes';
 import io from 'socket.io-client';
 import { browserHistory, Router } from 'react-router'
 
@@ -24,8 +24,7 @@ const initialState = {
 export default function chats(state = initialState, action) {
 
   switch (action.type) {
-    case ADD_CHAT:
-      console.log('add chat');
+    case types.ADD_CHAT:
       const allRooms = _.concat(state.joinedRooms, state.otherRooms);
       if (allRooms.filter(chat => chat.roomName === action.chat.roomName).length !== 0) {
         return state;
@@ -34,35 +33,30 @@ export default function chats(state = initialState, action) {
         joinedRooms: [...state.joinedRooms, action.chat],
         activeChannel: action.chat,
       };
-    case ADD_CHAT_ROOMID:
+    case types.ADD_CHAT_ROOMID:
       const tempAddChannel = state.activeChannel;
       tempAddChannel.roomId = action.roomId;
-      console.log('temp', tempAddChannel);
       return {...state,
         activeChannel: tempAddChannel,
       }
-    case LOAD_CHATS:
-      console.log('action chats', action.chats);
-
+    case types.LOAD_CHATS:
       return {...state,
         otherRooms: _.difference(action.chats, state.joinedRooms),
       };
-    case JOIN_CHAT: 
+    case types.JOIN_CHAT: 
       // cant use lodash difference to remove other rooms because obj is different
       return {...state,
         activeChannel: action.chat,
         joinedRooms: _.concat(state.joinedRooms, action.chat),
         otherRooms: state.otherRooms.filter(room => room.roomId != action.chat.roomId),
       };
-    case LEAVE_CHAT:
+    case types.LEAVE_CHAT:
       // TODO: support changes in userId
       if (state.activeChannel.roomId) {
         state.socket.emit('exit_room', {
           roomId: state.activeChannel.roomId,
           userId: state.socket.id,
         });
-
-        console.log('LEAVING ROOM')
       
         const oldChat = state.activeChannel;
         return {...state,
@@ -72,11 +66,11 @@ export default function chats(state = initialState, action) {
         };
       }
       return state;
-    case VIEW_CHAT:
+    case types.VIEW_CHAT:
       return {...state,
         viewChat: action.chat,
       }
-    case NEW_USER_JOINED:
+    case types.NEW_USER_JOINED:
       // user is added to rooms previously present (havent exit)
      if (action.data.messages) {
         return {...state,
@@ -86,15 +80,13 @@ export default function chats(state = initialState, action) {
       return {...state,
         messages: _.concat(state.messages, join_msg)
       };
-    case TOGGLE_CATEGORY:
+    case types.TOGGLE_CATEGORY:
       const tempFilter = _.cloneDeep(state.categoryFilter);
       tempFilter[action.category] = !tempFilter[action.category];
-      console.log('LOOK HERE', tempFilter);
       return {...state,
         categoryFilter: tempFilter,
       };
     default:
-      console.log('default');
       return state;
   }
 }

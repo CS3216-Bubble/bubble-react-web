@@ -1,4 +1,4 @@
-import { ADD_CHAT, JOIN_CHAT, LEAVE_CHAT, ADD_INCOMING_MESSAGE, POST_MESSAGE, SHOW_OTHERS_TYPING, SHOW_OTHERS_TYPING_STOPPED, NEW_USER_JOINED, USER_EXIT } from '../constants/actionTypes';
+import * as types from '../constants/actionTypes';
 import _ from 'lodash';
 import Moment from 'moment';
 
@@ -11,43 +11,40 @@ const initialState = {
 
 export default function chat(state = initialState, action) {
   switch (action.type) {
-    case ADD_CHAT:
+    case types.ADD_CHAT:
       return {...state,
         messages: [],
       }
-    case JOIN_CHAT:
+    case types.JOIN_CHAT:
       return {...state,
         messages: action.chat.messages,
       }
-    case LEAVE_CHAT:
+    case types.LEAVE_CHAT:
       return {...state,
         messages: [],
       }
-    case ADD_INCOMING_MESSAGE:
+    case types.ADD_INCOMING_MESSAGE:
       const removePendingIndex = _.findIndex(state.pendingMessages, function(m) {
-        console.log('content', action.msg.content);
         return m.message === action.msg.content;
       });
-      console.log('pre pending', state.pendingMessages);
       state.pendingMessages.splice(removePendingIndex, 1);
-      console.log('post pending', state.pendingMessages);
       return {...state,
         messages: _.concat(state.messages, action.msg),
         pendingMessages: state.pendingMessages,
       };
-    case POST_MESSAGE:
+    case types.POST_MESSAGE:
       return {...state,
         pendingMessages: _.concat(state.pendingMessages, action.msg)
       };
-    case SHOW_OTHERS_TYPING: 
+    case types.SHOW_OTHERS_TYPING: 
       return {...state,
         typer: action.msg.userId
       }
-    case SHOW_OTHERS_TYPING_STOPPED:
+    case types.SHOW_OTHERS_TYPING_STOPPED:
       return {...state,
         typer: '',
       }
-    case NEW_USER_JOINED:
+    case types.NEW_USER_JOINED:
       const join_msg = _.assign(action, {messageType: 'user-joined'} );
       // Load existing messages to user just joined
       if (action.data.messages) {
@@ -62,13 +59,12 @@ export default function chat(state = initialState, action) {
       return {...state,
         messages: _.concat(state.messages, join_msg)
       };
-    case USER_EXIT:
+    case types.USER_EXIT:
       const exit_msg = _.assign(action, {messageType: 'user-exited'} );
       return {...state,
         messages: _.concat(state.messages, exit_msg)
       };
     default:
-      console.log('default');
       return state;
   }
 }
