@@ -14,7 +14,7 @@ class HomeView extends Component {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
         <header style={{ textAlign: 'center' }}>
-          <p>Welcome to Bubble Chat</p>
+          <p style={{paddingTop: 30, fontSize: 24, fontWeight: 'bold'}}>Welcome to Bubble Chat</p>
         </header>
       </div>
     )

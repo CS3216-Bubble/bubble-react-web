@@ -3,6 +3,7 @@ import { browserHistory, Router } from 'react-router'
 import { Provider, connect } from 'react-redux'
 import _ from 'lodash'
 import classNames from 'classnames'
+import moment from 'moment'
 
 import { initEnvironment } from '../actions/environment'
 import { addChat, loadChats, viewChat, joinChat, addChatRoomId, toggleCategory } from '../actions/chats'
@@ -18,8 +19,11 @@ import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import Checkbox from 'material-ui/Checkbox'
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import Divider from 'material-ui/Divider'
 import Chip from 'material-ui/Chip'
+import Avatar from 'material-ui/Avatar'
+import {red400, pink200, purple300, lightBlue300, amber300, orange400, grey50 } from 'material-ui/styles/colors';
 
 class AppContainer extends Component {
   static propTypes = {
@@ -39,15 +43,22 @@ class AppContainer extends Component {
         categories: []
       },
       addChatModal: false,
-      categories: ['Rant', 'Funny', 'Nolstagia', 'Relationship', 'Advice', 'School', 'Chit-chat'],
+      categories: ['Rant', 'Funny', 'Nostalgia', 'Relationship', 'Advice', 'School'],
+      categoryColors: {
+        'Rant': red400,
+        'Funny': amber300,
+        'Nostalgia': orange400,
+        'Relationship': pink200,
+        'Advice': purple300,
+        'School': lightBlue300,
+      },
       categoryFilter: {
         'Rant': false,
         'Funny': false,
-        'Nolstagia': false,
+        'Nostalgia': false,
         'Relationship': false,
         'Advice': false,
-        'School': false,
-        'Chit-chat': false
+        'School': false
       }
     }
   }
@@ -164,6 +175,10 @@ class AppContainer extends Component {
     }
   }
 
+  handleSearchChange = (event) => {
+    this.setState({searchTerm: event.target.value})
+  }
+
   render () {
     const { screenHeight, isMobile, screenWidth } = this.props.environment
 
@@ -191,8 +206,30 @@ class AppContainer extends Component {
       )
 
     const generateCategoriesChips = () =>
-      this.state.categories.map((cat, i) =>
-        <Chip onTouchTap={() => this.props.toggleCategory(cat)} className={classNames('chip', { 'enabled-chip': this.props.chats.categoryFilter[cat] })} key={i} >{cat}</Chip>
+      this.state.categories.map((cat, i) => {
+        // enabled
+        if (this.props.chats.categoryFilter[cat]) {
+          return (
+            <Chip
+              onTouchTap={() => this.props.toggleCategory(cat)}
+              className={classNames('chip', { 'enabled-chip': this.props.chats.categoryFilter[cat] })}
+              key={i}
+              backgroundColor={this.state.categoryColors[cat]}>
+              {cat}
+            </Chip>
+          );
+        } else {
+          return (
+            <Chip
+              onTouchTap={() => this.props.toggleCategory(cat)}
+              className={classNames('chip', { 'enabled-chip': this.props.chats.categoryFilter[cat] })}
+              key={i}>
+              {cat}
+            </Chip>
+          );
+        }
+      }
+
       )
 
     const generateFilteredJoinedRooms = () => {
@@ -211,16 +248,56 @@ class AppContainer extends Component {
         return pass
       })
 
-      return filteredJoinedRooms.map(chat =>
-        <MenuItem onTouchTap={() => this.joinChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
-      )
+      return filteredJoinedRooms.map(chat => {
+        // var imgPath = 'images/';
+        // if (chat.categories.length > 0) {
+        //   imgPath += chat.categories[0] + ".jpg";
+        // } else {
+        //   imgPath += "default.jpg";
+        // }
+
+        // const avatar = (
+        //   <Avatar
+        //     src={imgPath}
+        //     style={{backgroundColor: '#69D2E7'}}/>
+        // );
+
+        const categories = chat.categories.map(function(cat) {
+          return <Chip color={this.state.categoryColors[cat]}>{cat}</Chip>
+        });
+
+        return (<Card
+          key={chat.roomId}
+          onTouchTap={() => this.joinChat(chat)}
+          >
+          <CardHeader
+            title={chat.roomName}
+            subtitle={chat.roomDescription}
+
+          />
+          <CardText className='card-body'>
+            <div>{moment.duration(moment().diff(moment(chat.lastActive))).humanize()} ago</div>
+            <div>{chat.numUsers} / {chat.userLimit} users</div>
+            <div>{categories}</div>
+          </CardText>
+        </Card>);
+      })
     }
 
     const generateFilteredOtherRooms = () => {
       const filters = Object.keys(_.pickBy(this.props.chats.categoryFilter))
-      const filteredOtherRooms = this.props.chats.otherRooms.filter((chat) => {
+      var filteredOtherRooms = this.props.chats.otherRooms.filter((chat) => {
         if (!chat) {
           return false
+        }
+
+        // Return false if search is active and chat does not match search term
+        if (this.state.searchTerm != '') {
+          var searchTerm = this.state.searchTerm.toLowerCase();
+          if (chat.roomName.toLowerCase().indexOf(searchTerm) < 0 ||
+              chat.roomDescription.toLowerCase().indexOf(searchTerm) < 0) {
+             return false
+          }
         }
 
         var pass = true
@@ -230,11 +307,45 @@ class AppContainer extends Component {
           }
         })
         return pass
-      })
+      });
 
-      return filteredOtherRooms.map(chat =>
-        <MenuItem onTouchTap={() => this.viewChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
-      )
+      filteredOtherRooms.push({roomId: 0, roomName: 'aldkfjkladf', roomDescription: 'lkajdf', lastActive: 9183, numUsers: 4, userLimit: 5, categories: ['Rant', 'Nostalgia']});
+
+      return filteredOtherRooms.map(chat => {
+        // var imgPath = 'images/';
+        // if (chat.categories.length > 0) {
+        //   imgPath += chat.categories[0] + ".jpg";
+        // } else {
+        //   imgPath += "default.jpg";
+        // }
+        //
+        // const avatar = (
+        //   <Avatar
+        //     src={imgPath}
+        //     style={{backgroundColor: '#69D2E7'}}/>
+        // );
+
+        const categories = chat.categories.map(function(cat, i) {
+          return <Chip className='card-chip' color={this.state.categoryColors[cat]} key={i}>{cat}</Chip>
+        }, this);
+
+        return (<Card
+          key={chat.roomId}
+          onTouchTap={() => this.joinChat(chat)}
+          >
+          <CardHeader
+            title={chat.roomName}
+            subtitle={chat.roomDescription}
+          />
+          <CardText className='card-body'>
+            <div className='card-body-row'>
+              <div className='text-left'>{moment.duration(moment().diff(moment(chat.lastActive))).humanize()} ago</div>
+              <div className='text-right'>{chat.numUsers} / {chat.userLimit} users</div>
+            </div>
+            <div className='card-categories chip' >{categories}</div>
+          </CardText>
+        </Card>);
+      }, this)
     }
 
     const checkboxChecked = (bool, cat) => {
@@ -288,32 +399,29 @@ class AppContainer extends Component {
               iconClassNameRight='muidocs-icon-navigation-expand-more'
               onLeftIconButtonTouchTap={this.handleSideBarToggle}
             />
-            <Drawer docked={this.props.environment.screenWidth > 500} open={this.props.environment.screenWidth > 500 || this.state.sideBarOpen} onRequestChange={(open) => this.setState({ sideBarOpen: open })}>
+            <Drawer className='drawer' docked={this.props.environment.screenWidth > 500} open={this.props.environment.screenWidth > 500 || this.state.sideBarOpen} onRequestChange={(open) => this.setState({ sideBarOpen: open })}>
               <div className='sidebar-header'>Bubble</div>
-              <div className='row'>
-                <div className='col-xs-8'>
-                  <TextField
-                    hintText='Hint Text'
-                    floatingLabelText='Search'
-                  />
+              <div className='sidebar-content'>
+                  <RaisedButton label="Create Chat" primary={true} fullWidth={true} onClick={::this.openAddChatModal}/>
+                    <TextField
+                      id="text-field-controlled"
+                      name="adjlkadlf"
+                      hintText='Search for chats...'
+                      floatingLabelText='Search'
+                      fullWidth={true}
+                      value={this.state.searchTerm}
+                      onChange={(event) => this.setState({searchTerm: event.target.value})}
+                    />
+                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                  {generateCategoriesChips()}
                 </div>
-                <div className='col-xs-3'>
-                  <div className='div-create-chat'>
-                    <IconButton onClick={::this.openAddChatModal} tooltip='Create chat' tooltipPosition='top-left'>
-                      <i className='material-icons'>mode_edit</i>
-                    </IconButton>
-                  </div>
-                </div>
+                <h5>Joined Rooms</h5>
+                <Divider />
+                {generateFilteredJoinedRooms()}
+                <h5>Other Rooms</h5>
+                <Divider />
+                {generateFilteredOtherRooms()}
               </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {generateCategoriesChips()}
-              </div>
-              <h5>Joined Rooms</h5>
-              <Divider />
-              {generateFilteredJoinedRooms()}
-              <h5>Other Rooms</h5>
-              <Divider />
-              {generateFilteredOtherRooms()}
             </Drawer>
             {newChatModal}
             <div className='div-main'>

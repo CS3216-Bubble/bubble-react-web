@@ -51,13 +51,40 @@ span {
 }
 
 .chip {
-  margin: 0px 5px 0px 0px !important;
+  margin: 0px 5px 10px 0px !important;
 }
 
 [type=button]{
   -webkit-appearance: none !important;
 }
 
-.enabled-chip {
-  background-color: #4fc3f7 !important;
+.card-body {
+  margin-top: -20px;
+}
+
+.card-body-row {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.card-categories {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.card-chip {
+  margin-right: 5px;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
 }

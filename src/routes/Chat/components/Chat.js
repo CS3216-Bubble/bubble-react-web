@@ -96,12 +96,16 @@ class Chat extends Component {
     return (
       <div style={{ padding: '0', height: '100%', width: '100%', display: '-webkit-box' }}>
         <div className='chat-main'>
-          <header className='chat-title-div'>
+          <div className='chat-title-div'>
             <span className='chat-title'>
               {activeChannel.roomName}
             </span>
-            <RaisedButton className='pull-right' label='Leave Room' onTouchTap={() => this.leaveChat()} />
-          </header>
+            <div className='pull-right'>
+              <RaisedButton label='Leave Room' onTouchTap={() => this.leaveChat()} />
+            </div>
+          </div>
+
+
           <Divider />
 
           <ul className='chat-body' style={bodyStyle} ref='messageList' >
@@ -145,4 +149,3 @@ const mapDispatch = {
 }
 
 export default connect(mapStateToProps, mapDispatch)(Chat)
-
