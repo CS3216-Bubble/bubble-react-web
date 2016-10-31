@@ -175,10 +175,6 @@ class AppContainer extends Component {
     }
   }
 
-  handleSearchChange = (event) => {
-    this.setState({searchTerm: event.target.value})
-  }
-
   render () {
     const { screenHeight, isMobile, screenWidth } = this.props.environment
 
@@ -248,56 +244,16 @@ class AppContainer extends Component {
         return pass
       })
 
-      return filteredJoinedRooms.map(chat => {
-        // var imgPath = 'images/';
-        // if (chat.categories.length > 0) {
-        //   imgPath += chat.categories[0] + ".jpg";
-        // } else {
-        //   imgPath += "default.jpg";
-        // }
-
-        // const avatar = (
-        //   <Avatar
-        //     src={imgPath}
-        //     style={{backgroundColor: '#69D2E7'}}/>
-        // );
-
-        const categories = chat.categories.map(function(cat) {
-          return <Chip color={this.state.categoryColors[cat]}>{cat}</Chip>
-        });
-
-        return (<Card
-          key={chat.roomId}
-          onTouchTap={() => this.joinChat(chat)}
-          >
-          <CardHeader
-            title={chat.roomName}
-            subtitle={chat.roomDescription}
-
-          />
-          <CardText className='card-body'>
-            <div>{moment.duration(moment().diff(moment(chat.lastActive))).humanize()} ago</div>
-            <div>{chat.numUsers} / {chat.userLimit} users</div>
-            <div>{categories}</div>
-          </CardText>
-        </Card>);
-      })
+      return filteredJoinedRooms.map(chat =>
+        <MenuItem onTouchTap={() => this.joinChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
+      )
     }
 
     const generateFilteredOtherRooms = () => {
       const filters = Object.keys(_.pickBy(this.props.chats.categoryFilter))
-      var filteredOtherRooms = this.props.chats.otherRooms.filter((chat) => {
+      const filteredOtherRooms = this.props.chats.otherRooms.filter((chat) => {
         if (!chat) {
           return false
-        }
-
-        // Return false if search is active and chat does not match search term
-        if (this.state.searchTerm != '') {
-          var searchTerm = this.state.searchTerm.toLowerCase();
-          if (chat.roomName.toLowerCase().indexOf(searchTerm) < 0 ||
-              chat.roomDescription.toLowerCase().indexOf(searchTerm) < 0) {
-             return false
-          }
         }
 
         var pass = true
@@ -307,45 +263,11 @@ class AppContainer extends Component {
           }
         })
         return pass
-      });
+      })
 
-      filteredOtherRooms.push({roomId: 0, roomName: 'aldkfjkladf', roomDescription: 'lkajdf', lastActive: 9183, numUsers: 4, userLimit: 5, categories: ['Rant', 'Nostalgia']});
-
-      return filteredOtherRooms.map(chat => {
-        // var imgPath = 'images/';
-        // if (chat.categories.length > 0) {
-        //   imgPath += chat.categories[0] + ".jpg";
-        // } else {
-        //   imgPath += "default.jpg";
-        // }
-        //
-        // const avatar = (
-        //   <Avatar
-        //     src={imgPath}
-        //     style={{backgroundColor: '#69D2E7'}}/>
-        // );
-
-        const categories = chat.categories.map(function(cat, i) {
-          return <Chip className='card-chip' color={this.state.categoryColors[cat]} key={i}>{cat}</Chip>
-        }, this);
-
-        return (<Card
-          key={chat.roomId}
-          onTouchTap={() => this.joinChat(chat)}
-          >
-          <CardHeader
-            title={chat.roomName}
-            subtitle={chat.roomDescription}
-          />
-          <CardText className='card-body'>
-            <div className='card-body-row'>
-              <div className='text-left'>{moment.duration(moment().diff(moment(chat.lastActive))).humanize()} ago</div>
-              <div className='text-right'>{chat.numUsers} / {chat.userLimit} users</div>
-            </div>
-            <div className='card-categories chip' >{categories}</div>
-          </CardText>
-        </Card>);
-      }, this)
+      return filteredOtherRooms.map(chat =>
+        <MenuItem onTouchTap={() => this.viewChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
+      )
     }
 
     const checkboxChecked = (bool, cat) => {

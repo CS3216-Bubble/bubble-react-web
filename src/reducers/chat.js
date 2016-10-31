@@ -16,6 +16,9 @@ export default function chat (state = initialState, action) {
         messages: []
       }
     case types.JOIN_CHAT:
+      action.chat.messages.sort(function (a, b) {
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      });
       return { ...state,
         messages: action.chat.messages
       }

@@ -2,7 +2,12 @@ import * as types from '../constants/actionTypes'
 import io from 'socket.io-client'
 import { browserHistory, Router } from 'react-router'
 
-let host = 'http://getbubblechat.com';
+let host;
+if (__DEV__) {
+  host = window.location.protocol + '//' + window.location.hostname + ':3000';
+} else {
+  host = window.location.protocol + '//' + window.location.hostname;
+}
 const initialState = {
   loaded: false,
   socket: io(host),
