@@ -41,6 +41,8 @@ class Chat extends Component {
         this.props.userExit(msg)
       }
     })
+    const messageList = this.refs.messageList
+    messageList.scrollTop = messageList.scrollHeight
   }
   componentDidUpdate () {
     const messageList = this.refs.messageList
