@@ -81,6 +81,7 @@ export default function chats (state = initialState, action) {
           joinedRooms: [...state.joinedRooms, action.chat]
         }
       }
+      const join_msg = _.assign(action, { messageType: 'user-joined' })
       return { ...state,
         messages: _.concat(state.messages, join_msg)
       }
