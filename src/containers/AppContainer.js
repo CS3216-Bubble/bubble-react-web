@@ -265,6 +265,10 @@ class AppContainer extends Component {
         return pass
       })
 
+      filteredOtherRooms.sort((a, b) => {
+        return (new Date(b.lastActive)) - (new Date(a.lastActive));
+      })
+
       return filteredOtherRooms.map(chat =>
         <MenuItem onTouchTap={() => this.viewChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
       )
