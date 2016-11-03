@@ -52,7 +52,12 @@ export default function chat (state = initialState, action) {
       action.chat.messages.sort(function (a, b) {
         return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
       });
-      action.chat.messages.forEach(m => m.username = generateName(m.userId));
+      action.chat.messages.forEach(m => {
+        m.username = generateName(m.userId)
+        if (m.messageType == 'REACTION') {
+          m.targetUsername = generateName(m.targetUser);
+        }
+      });
       console.log(action.chat.messages);
       return { ...state,
         messages: action.chat.messages
