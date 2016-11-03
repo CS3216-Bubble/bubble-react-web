@@ -52,7 +52,7 @@ export default class MessageListItem extends Component {
               </div>
               <div className='col-xs-9'>
                 <span>
-                  <b><button className='username-btn' onClick={this.handleClick.bind(this, message.username)}>{message.username }</button></b>
+                  <b><button className='username-btn' onClick={this.handleClick.bind(this, {username: message.username, userId: message.userId})}>{message.username }</button></b>
                 </span>
                 <div className='message'>{message.message || message.content }</div>
               </div>

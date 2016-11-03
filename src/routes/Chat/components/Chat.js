@@ -6,6 +6,8 @@ import MessageListItem from './MessageListItem'
 import TypingListItem from './TypingListItem'
 import Divider from 'material-ui/Divider'
 import RaisedButton from 'material-ui/RaisedButton'
+import FlatButton from 'material-ui/FlatButton'
+import Dialog from 'material-ui/Dialog'
 import { addIncomingMessage, postMessage, showOthersTyping, showOthersTypingStopped, newUserJoined, userExit, leaveChat } from '../../../actions/chat'
 
 class Chat extends Component {
@@ -18,7 +20,9 @@ class Chat extends Component {
     super(props, context)
     this.state = {
       messages: [],
-      typer: ''
+      typer: '',
+      openUserModal: false,
+      selectedUser: {},
     }
   }
   componentDidMount () {
@@ -58,7 +62,15 @@ class Chat extends Component {
   }
 
   handleClickOnUser (user) {
+    console.log('user', user)
+    this.setState({
+      openUserModal: true,
+      selectedUser: user,
+    })
+  }
 
+  handleCloseUserModal () {
+    this.setState({openUserModal: false})
   }
 
   leaveChat () {
@@ -88,14 +100,76 @@ class Chat extends Component {
         } else {
           return <MessageListItem key={i} messageType='others-message' handleClickOnUser={::this.handleClickOnUser} message={message} />
         }
-      }
-      )
+      })
 
     const generatePendingMessages = () =>
       this.props.chat.pendingMessages.map((message, i) =>
         <MessageListItem key={i} messageType='pending' handleClickOnUser={::this.handleClickOnUser} message={message} />
       )
 
+    const selectedUserActions = [
+      <RaisedButton
+        label="Thank"
+        primary={true}
+        onTouchTap={this.handleThankReaction}
+      />,
+      <RaisedButton
+        label="Cheer"
+        secondary={true}
+        onTouchTap={this.handleCheerReaction}
+      />,
+      <RaisedButton
+        label="Hide"
+        onTouchTap={this.handleHideUser}
+      />,
+    ];
+
+    const imageStyle = {
+      width: '150px',
+      height: '150px',
+      marginLeft: '50px',
+      marginBottom: '20px',
+    }
+
+    const buttonStyle = {
+      minWidth: '25px',
+      marginRight: '5px',
+    }
+
+    const userModal = (
+      <div>
+        <Dialog
+          modal={false}
+          open={this.state.openUserModal}
+          contentStyle={{width: '20%'}}
+          onRequestClose={this.handleCloseUserModal}
+        >
+        <h3 style={{textAlign: 'center'}}>{this.state.selectedUser.username}</h3>
+        <Divider />
+        <img style={imageStyle} src= {'http://flathash.com/' + (this.state.selectedUser.userId ?  this.state.selectedUser.userId  : '1') } alt="" />
+        <div>
+          <RaisedButton
+            style={buttonStyle}
+            label="Thank"
+            primary={true}
+            onTouchTap={this.handleThankReaction}
+          />
+          <RaisedButton
+            style={buttonStyle}
+            label="Cheer"
+            secondary={true}
+            onTouchTap={this.handleCheerReaction}
+          />
+          <RaisedButton
+            style={buttonStyle}
+            label="Hide"
+            onTouchTap={this.handleHideUser}
+          />
+        </div>
+        </Dialog>
+      </div>
+    )
+      
     return (
       <div style={{ padding: '0', height: '100%', width: '100%', display: '-webkit-box' }}>
         <div className='chat-main'>
@@ -129,6 +203,7 @@ class Chat extends Component {
             </div>
           </div>
         </div>
+        {userModal}
       </div>
     )
   }
