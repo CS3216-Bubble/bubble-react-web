@@ -72,7 +72,7 @@ export default function chat (state = initialState, action) {
         pendingMessages: state.pendingMessages
       }
     case types.POST_MESSAGE:
-      action.msg.username = generateName(socket.id);
+      action.msg.username = generateName(socket.socket.id);
       return { ...state,
         pendingMessages: _.concat(state.pendingMessages, action.msg)
       }
