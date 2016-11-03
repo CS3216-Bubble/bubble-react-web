@@ -34,8 +34,10 @@ function generateName(userId) {
     var ani = animals.animals;
     // Get adjective
     var adjective = adj[((hashCode % adj.length) + adj.length) % adj.length];
+    adjective = adjective.charAt(0).toUpperCase() + adjective.slice(1);
     // Get animal
     var animal = ani[((hashCode % ani.length) + ani.length) % ani.length];
+    animal = animal.charAt(0).toUpperCase() + animal.slice(1);
     // Return result
     return adjective + " " + animal;
 }
