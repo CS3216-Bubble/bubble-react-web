@@ -2,6 +2,7 @@ import * as types from '../constants/actionTypes'
 import _ from 'lodash'
 import Moment from 'moment'
 
+let socket = require('./chats')
 let adjectives = require('../utils/adjectives')
 let animals = require('../utils/animals')
 let numAvatars = 160;
@@ -69,6 +70,7 @@ export default function chat (state = initialState, action) {
         pendingMessages: state.pendingMessages
       }
     case types.POST_MESSAGE:
+      action.msg.username = generateName(socket.id);
       return { ...state,
         pendingMessages: _.concat(state.pendingMessages, action.msg)
       }

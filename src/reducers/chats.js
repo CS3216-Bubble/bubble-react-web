@@ -3,6 +3,7 @@ import io from 'socket.io-client'
 import { browserHistory, Router } from 'react-router'
 
 let host = 'https://getbubblechat.com';
+export const socket = io(host);
 // if (__DEV__) {
 //   host = window.location.protocol + '//' + window.location.hostname + ':3000';
 // } else {
@@ -10,7 +11,7 @@ let host = 'https://getbubblechat.com';
 // }
 const initialState = {
   loaded: false,
-  socket: io(host),
+  socket: socket,
   activeChannel: {},
   viewChat: {},
   joinedRooms: [],
