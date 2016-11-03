@@ -10,9 +10,15 @@ export default class MessageListItem extends Component {
   }
   render () {
     const { message, messageType } = this.props
-    const imageStyle = {
+    const bigImageStyle = {
       width: '45px',
       height: '45px',
+    }
+    const smallImageStyle = {
+      width: '25px',
+      height: '25px',
+      marginTop: '-5px',
+      marginRight: '10px',
     }
     if (messageType === 'my-message') {
       return (
@@ -42,7 +48,7 @@ export default class MessageListItem extends Component {
           <div className='talk-bubble round'>
             <div className='row'>
               <div className='col-xs-3'>
-                <img style={imageStyle} src= {'http://flathash.com/' + (message.userId ?  message.userId : '1') } alt="" />
+                <img style={bigImageStyle} src= {'http://flathash.com/' + (message.userId ?  message.userId : '1') } alt="" />
               </div>
               <div className='col-xs-9'>
                 <span>
@@ -57,16 +63,18 @@ export default class MessageListItem extends Component {
     } else if (messageType === 'user-joined') {
       return (
         <li className='row'>
-          <div>
-            <div className='user-joined-message'>{message.data.username} joined</div>
+          <div className='user-joined-message'>
+            <img style={smallImageStyle} src= {'http://flathash.com/' + (message.data.userId ?  message.data.userId : '1') } alt="" />
+            {message.data.username} joined
           </div>
         </li>
         )
     } else if (messageType === 'user-exited' && message.data.userId) {
       return (
         <li className='row'>
-          <div>
-            <div className='user-exited-message'>{message.data.username} left</div>
+          <div className='user-exited-message'>
+            <img style={smallImageStyle} src= {'http://flathash.com/' + (message.data.userId ?  message.data.userId : '1') } alt="" />
+            {message.data.username} left
           </div>
         </li>
         )
