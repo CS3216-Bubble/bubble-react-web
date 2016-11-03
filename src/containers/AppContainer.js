@@ -343,6 +343,7 @@ class AppContainer extends Component {
             floatingLabelText='Description'
             onChange={::this.handleModalRoomDescriptionChange}
             value={this.state.chat.roomDescription}
+            maxLength='70'
           />
           <br />
           <TextField
