@@ -249,10 +249,23 @@ class AppContainer extends Component {
       )
     }
 
+    const generateHotRooms = () => {
+      const hotRooms = this.props.chats.otherRooms.filter((chat) => {
+        if (!chat) {
+          return false
+        }
+        return chat.roomType === 'HOT';
+      })
+
+      return hotRooms.map(chat =>
+        <MenuItem onTouchTap={() => this.joinChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
+      )
+    }
+
     const generateFilteredOtherRooms = () => {
       const filters = Object.keys(_.pickBy(this.props.chats.categoryFilter))
       const filteredOtherRooms = this.props.chats.otherRooms.filter((chat) => {
-        if (!chat) {
+        if (!chat || chat.roomType === 'HOT') {
           return false
         }
 
@@ -344,6 +357,9 @@ class AppContainer extends Component {
                 <h5>Joined Rooms</h5>
                 <Divider />
                 {generateFilteredJoinedRooms()}
+                <h5>Sticky Rooms</h5>
+                <Divider />
+                {generateHotRooms()}
                 <h5>Other Rooms</h5>
                 <Divider />
                 {generateFilteredOtherRooms()}
