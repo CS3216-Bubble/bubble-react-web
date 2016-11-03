@@ -7,6 +7,13 @@ export function addIncomingMessage (msg) {
   }
 }
 
+export function addIncomingReaction (msg) {
+  return {
+    type: types.ADD_INCOMING_REACTION,
+    msg
+  }
+}
+
 export function postMessage (msg) {
   return {
     type: types.POST_MESSAGE,

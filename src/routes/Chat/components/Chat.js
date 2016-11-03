@@ -8,7 +8,7 @@ import Divider from 'material-ui/Divider'
 import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton'
 import Dialog from 'material-ui/Dialog'
-import { addIncomingMessage, postMessage, showOthersTyping, showOthersTypingStopped, newUserJoined, userExit, leaveChat } from '../../../actions/chat'
+import { addIncomingMessage, addIncomingReaction, postMessage, showOthersTyping, showOthersTypingStopped, newUserJoined, userExit, leaveChat } from '../../../actions/chat'
 
 class Chat extends Component {
 
@@ -30,6 +30,9 @@ class Chat extends Component {
     // TODO: LOAD MESSAGES socket.on(load_messages), socket.emit(load_messages)
     socket.on('add_message', (msg) => {
       this.props.addIncomingMessage(msg)
+    })
+    socket.on('add_reaction', (msg) => {
+      this.props.addIncomingReaction(msg)
     })
     socket.on('typing', (msg) => {
       this.props.showOthersTyping(msg)
@@ -55,6 +58,7 @@ class Chat extends Component {
   componentWillUnmount () {
       // Remove all listeners that depends on the mount state of the component
     this.props.socket.off('add_message')
+    this.props.socket.off('add_reaction')
     this.props.socket.off('typing')
     this.props.socket.off('stop_typing')
     this.props.socket.off('join_room')
@@ -251,6 +255,7 @@ function mapStateToProps (state) {
 
 const mapDispatch = {
   addIncomingMessage,
+  addIncomingReaction,
   postMessage,
   showOthersTyping,
   showOthersTypingStopped,

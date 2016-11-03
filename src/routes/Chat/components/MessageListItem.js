@@ -20,7 +20,28 @@ export default class MessageListItem extends Component {
       marginTop: '-5px',
       marginRight: '10px',
     }
-    if (messageType === 'my-message') {
+
+    if (message.messageType == 'REACTION' && message.content == 'THANK') {
+      return (
+        <li className='row'>
+          <div className='user-exited-message'>
+            <img style={smallImageStyle} src= {'http://flathash.com/' + (message.userId ?  message.userId : '1') } alt="" />
+            {message.username} thanked {message.targetUsername} 
+            <img style={smallImageStyle} src= {'http://flathash.com/' + (message.targetUser ?  message.targetUser : '1') } alt="" />
+          </div>
+        </li>
+      )
+    } else if (message.messageType == 'REACTION' && message.content == 'CHEER') {
+      return (
+        <li className='row'>
+          <div className='user-exited-message'>
+            <img style={smallImageStyle} src= {'http://flathash.com/' + (message.userId ?  message.userId : '1') } alt="" />
+            {message.username} cheered {message.targetUsername} 
+            <img style={smallImageStyle} src= {'http://flathash.com/' + (message.targetUser ?  message.targetUser : '1') } alt="" />
+          </div>
+        </li>
+      )
+    } else if (messageType === 'my-message') {
       return (
         <li className='my-message row'>
           <div className='talk-bubble round pull-right'>

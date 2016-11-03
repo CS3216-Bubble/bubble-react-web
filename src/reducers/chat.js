@@ -61,12 +61,16 @@ export default function chat (state = initialState, action) {
       return { ...state,
         messages: []
       }
+    case types.ADD_INCOMING_REACTION:
     case types.ADD_INCOMING_MESSAGE:
       const removePendingIndex = _.findIndex(state.pendingMessages, function (m) {
         return m.message === action.msg.content
       })
       state.pendingMessages.splice(removePendingIndex, 1)
       action.msg.username = generateName(action.msg.userId)
+      if (action.msg.messageType == 'REACTION') {
+        action.msg.targetUsername = generateName(action.msg.targetUser);
+      }
       return { ...state,
         messages: _.concat(state.messages, action.msg),
         pendingMessages: state.pendingMessages
