@@ -10,6 +10,10 @@ export default class MessageListItem extends Component {
   }
   render () {
     const { message, messageType } = this.props
+    const imageStyle = {
+      width: '45px',
+      height: '45px',
+    }
     if (messageType === 'my-message') {
       return (
         <li className='my-message row'>
@@ -30,10 +34,17 @@ export default class MessageListItem extends Component {
       return (
         <li className='others-message row'>
           <div className='talk-bubble round'>
-            <span>
-              <b><button className='username-btn' onClick={this.handleClick.bind(this, message.username)}>{message.username }</button></b>
-            </span>
-            <div className='message'>{message.message || message.content }</div>
+            <div className='row'>
+              <div className='col-xs-3'>
+                <img style={imageStyle} src= {'http://flathash.com/' + (message.userId ?  message.userId : '1') } alt="" />
+              </div>
+              <div className='col-xs-9'>
+                <span>
+                  <b><button className='username-btn' onClick={this.handleClick.bind(this, message.username)}>{message.username }</button></b>
+                </span>
+                <div className='message'>{message.message || message.content }</div>
+              </div>
+            </div>
           </div>
         </li>
       )
