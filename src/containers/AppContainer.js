@@ -44,6 +44,7 @@ class AppContainer extends Component {
       },
       addChatModal: false,
       categories: ['Rant', 'Funny', 'Nostalgia', 'Relationship', 'Advice', 'School'],
+      searchTerm: '',
       categoryColors: {
         'Rant': red400,
         'Funny': amber300,
@@ -230,7 +231,7 @@ class AppContainer extends Component {
 
     const generateFilteredJoinedRooms = () => {
       const filters = Object.keys(_.pickBy(this.props.chats.categoryFilter))
-      const filteredJoinedRooms = this.props.chats.joinedRooms.filter((chat) => {
+      var filteredJoinedRooms = this.props.chats.joinedRooms.filter((chat) => {
         if (!chat) {
           return false
         }
@@ -243,6 +244,16 @@ class AppContainer extends Component {
         })
         return pass
       })
+      if (this.state.searchTerm !== '') {
+        filteredJoinedRooms = filteredJoinedRooms.filter( (chat) => {
+          if (chat.roomName.toLowerCase().indexOf(this.state.searchTerm.toLowerCase()) > -1) {
+            return true;
+          }
+          if (chat.roomDescription.toLowerCase().indexOf(this.state.searchTerm.toLowerCase()) > -1) {
+            return true;
+          }
+        })
+      }
 
       return filteredJoinedRooms.map(chat =>
         <MenuItem onTouchTap={() => this.joinChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
@@ -250,12 +261,22 @@ class AppContainer extends Component {
     }
 
     const generateHotRooms = () => {
-      const hotRooms = this.props.chats.otherRooms.filter((chat) => {
+      var hotRooms = this.props.chats.otherRooms.filter((chat) => {
         if (!chat) {
           return false
         }
         return chat.roomType === 'HOT';
       })
+      if (this.state.searchTerm !== '') {
+        hotRooms = hotRooms.filter( (chat) => {
+          if (chat.roomName.toLowerCase().indexOf(this.state.searchTerm.toLowerCase()) > -1) {
+            return true;
+          }
+          if (chat.roomDescription.toLowerCase().indexOf(this.state.searchTerm.toLowerCase()) > -1) {
+            return true;
+          }
+        })
+      }
 
       return hotRooms.map(chat =>
         <MenuItem onTouchTap={() => this.joinChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
@@ -264,7 +285,7 @@ class AppContainer extends Component {
 
     const generateFilteredOtherRooms = () => {
       const filters = Object.keys(_.pickBy(this.props.chats.categoryFilter))
-      const filteredOtherRooms = this.props.chats.otherRooms.filter((chat) => {
+      var filteredOtherRooms = this.props.chats.otherRooms.filter((chat) => {
         if (!chat || chat.roomType === 'HOT') {
           return false
         }
@@ -277,6 +298,17 @@ class AppContainer extends Component {
         })
         return pass
       })
+
+      if (this.state.searchTerm !== '') {
+        filteredOtherRooms = filteredOtherRooms.filter( (chat) => {
+          if (chat.roomName.toLowerCase().indexOf(this.state.searchTerm.toLowerCase()) > -1) {
+            return true;
+          }
+          if (chat.roomDescription.toLowerCase().indexOf(this.state.searchTerm.toLowerCase()) > -1) {
+            return true;
+          }
+        })
+      }
 
       filteredOtherRooms.sort((a, b) => {
         return (new Date(b.lastActive)) - (new Date(a.lastActive));
