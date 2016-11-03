@@ -31,7 +31,7 @@ export default class MessageListItem extends Component {
         <li className='others-message row'>
           <div className='talk-bubble round'>
             <span>
-              <b><button className='username-btn' onClick={this.handleClick.bind(this, message.userId)}>{message.userId }</button></b>
+              <b><button className='username-btn' onClick={this.handleClick.bind(this, message.username)}>{message.username }</button></b>
             </span>
             <div className='message'>{message.message || message.content }</div>
           </div>
@@ -41,7 +41,7 @@ export default class MessageListItem extends Component {
       return (
         <li className='row'>
           <div>
-            <div className='user-joined-message'>{message.data.userId} joined</div>
+            <div className='user-joined-message'>{message.data.username} joined</div>
           </div>
         </li>
         )
@@ -49,7 +49,7 @@ export default class MessageListItem extends Component {
       return (
         <li className='row'>
           <div>
-            <div className='user-exited-message'>{message.data.userId} left</div>
+            <div className='user-exited-message'>{message.data.username} left</div>
           </div>
         </li>
         )

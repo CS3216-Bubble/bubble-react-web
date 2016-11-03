@@ -2,11 +2,41 @@ import * as types from '../constants/actionTypes'
 import _ from 'lodash'
 import Moment from 'moment'
 
+let adjectives = require('../utils/adjectives')
+let animals = require('../utils/animals')
+let numAvatars = 160;
+
 const initialState = {
   loaded: false,
   pendingMessages: [],
   messages: [],
   typer: ''
+}
+
+// Utility function for hashing
+function hashID(userId) {
+    var hash = 0;
+    if (userId && userId.length != 0) {
+        for (var i = 0; i < userId.length; i++) {
+            let char = userId.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash;
+        }
+    }
+    return hash;
+}
+
+// Name generator
+function generateName(userId) {
+    var hashCode = hashID(userId);
+    var adj = adjectives.adjectives;
+    var ani = animals.animals;
+    // Get adjective
+    var adjective = adj[((hashCode % adj.length) + adj.length) % adj.length];
+    // Get animal
+    var animal = ani[((hashCode % ani.length) + ani.length) % ani.length];
+    // Return result
+    return adjective + " " + animal;
 }
 
 export default function chat (state = initialState, action) {
@@ -19,6 +49,8 @@ export default function chat (state = initialState, action) {
       action.chat.messages.sort(function (a, b) {
         return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
       });
+      action.chat.messages.forEach(m => m.username = generateName(m.userId));
+      console.log(action.chat.messages);
       return { ...state,
         messages: action.chat.messages
       }
@@ -31,6 +63,7 @@ export default function chat (state = initialState, action) {
         return m.message === action.msg.content
       })
       state.pendingMessages.splice(removePendingIndex, 1)
+      action.msg.username = generateName(action.msg.userId)
       return { ...state,
         messages: _.concat(state.messages, action.msg),
         pendingMessages: state.pendingMessages
@@ -49,21 +82,13 @@ export default function chat (state = initialState, action) {
       }
     case types.NEW_USER_JOINED:
       const join_msg = _.assign(action, { messageType: 'user-joined' })
-      // Load existing messages to user just joined
-      if (action.data.messages) {
-        // sort the messages according to time
-        action.data.messages.sort(function (left, right) {
-          return Moment.utc(left.createdAt).diff(Moment.utc(right.createdAt))
-        })
-        return { ...state,
-          messages: _.concat(action.data.messages, join_msg)
-        }
-      }
+      join_msg.data.username = generateName(action.data.userId);
       return { ...state,
         messages: _.concat(state.messages, join_msg)
       }
     case types.USER_EXIT:
       const exit_msg = _.assign(action, { messageType: 'user-exited' })
+      exit_msg.data.username = generateName(action.data.userId);
       return { ...state,
         messages: _.concat(state.messages, exit_msg)
       }

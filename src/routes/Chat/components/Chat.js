@@ -62,6 +62,7 @@ class Chat extends Component {
   }
 
   leaveChat () {
+    this.props.socket.emit('exit_room')
     this.props.leaveChat()
     browserHistory.push('/')
   }
