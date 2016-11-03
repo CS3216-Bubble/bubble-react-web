@@ -19,7 +19,7 @@ export default class MessageComposer extends Component {
   handleSubmit (event) {
     const { socket, activeChannel, postMessage } = this.props
     const message = event.target.value.trim()
-    if (event.which === 13) {
+    if (event.which === 13 && message != '') {
       event.preventDefault()
       // TODO: make the userId retrievable from backend when persisting user
       var newMessage = {
