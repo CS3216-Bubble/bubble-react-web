@@ -70,7 +70,40 @@ class Chat extends Component {
   }
 
   handleCloseUserModal () {
-    this.setState({openUserModal: false})
+    this.setState({
+      openUserModal: false,
+      selectedUser: {},
+    })
+  }
+
+  handleThankReaction = () => {
+    const {socket, activeChannel} = this.props;
+    var request = {
+      user: socket.id,
+      roomId: activeChannel.roomId,
+      reaction: 'THANK',
+      targetUser: this.state.selectedUser.userId
+    };
+    this.props.socket.emit('add_reaction', request);
+    this.setState({
+      openUserModal: false,
+      selectedUser: {},
+    })
+  }
+
+  handleCheerReaction = () => {
+    const {socket, activeChannel} = this.props;
+    var request = {
+      user: socket.id,
+      roomId: activeChannel.roomId,
+      reaction: 'CHEER',
+      targetUser: this.state.selectedUser.userId
+    };
+    this.props.socket.emit('add_reaction', request);
+    this.setState({
+      openUserModal: false,
+      selectedUser: {},
+    })
   }
 
   leaveChat () {
