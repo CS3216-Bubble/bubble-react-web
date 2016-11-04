@@ -107,3 +107,39 @@ li {
 .user-joined-message {
 	text-align: center;
 }
+
+
+.message-composer {
+	width: 95%;
+	margin-top: 15px;
+
+	 @media (max-width: 1225px) {
+	 	width: 94%;
+	 }
+
+	@media (max-width: 1070px) {
+	 	width: 93%;
+	 }
+
+	 @media (max-width: 960px) {
+	 	width: 92%;
+	 }
+
+	 @media (max-width: 870px) {
+	 	width: 90%;
+	 }
+
+	@media (max-width: 750px) {
+	 	width: 88%;
+	 }
+}
+
+.emoji-button {
+  background:none;
+  border:none;
+  font-size: 30px;
+  color: #95a5a6;
+  float: left;
+  margin-right: 10px;
+  margin-top: -8px;
+}

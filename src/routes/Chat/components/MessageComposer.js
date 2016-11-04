@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { FormControl } from 'react-bootstrap'
 import { postMessage } from '../../../actions/chat'
+import EmojiPicker from 'emojione-picker';
 
 export default class MessageComposer extends Component {
 
@@ -13,7 +14,8 @@ export default class MessageComposer extends Component {
     super(props, context)
     this.state = {
       text: '',
-      typing: false
+      typing: false,
+      openEmojiPicker: false,
     }
   }
   handleSubmit (event) {
@@ -46,9 +48,23 @@ export default class MessageComposer extends Component {
     }
   }
   render () {
+    const emojiPicker = (        
+      <EmojiPicker search={true} onChange={(data) => {
+        let char = eval('"\\u{' + data.unicode + '}"')
+        this.setState({
+          text: this.state.text + char + ' ',
+          openEmojiPicker: false,
+        })
+      }} />
+    )
+
     return (
       <div className='chat-message-field'>
+        <div style={{width:'10%'}}>
+          <button className='emoji-button' onTouchTap={(event) => this.setState({openEmojiPicker: !this.state.openEmojiPicker})}>☺</button>
+        </div>
         <FormControl
+          className='message-composer'
           type='text'
           autoFocus='true'
           placeholder='Type here to chat!'
@@ -56,6 +72,7 @@ export default class MessageComposer extends Component {
           onChange={::this.handleChange}
           onKeyDown={::this.handleSubmit}
         />
+        { this.state.openEmojiPicker ? emojiPicker : [] }
       </div>
     )
   }

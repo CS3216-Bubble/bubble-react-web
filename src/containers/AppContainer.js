@@ -371,7 +371,7 @@ class AppContainer extends Component {
               iconClassNameRight='muidocs-icon-navigation-expand-more'
               onLeftIconButtonTouchTap={this.handleSideBarToggle}
             />
-            <Drawer className='drawer' docked={this.props.environment.screenWidth > 500} open={this.props.environment.screenWidth > 500 || this.state.sideBarOpen} onRequestChange={(open) => this.setState({ sideBarOpen: open })}>
+            <Drawer className='drawer' docked={this.props.environment.screenWidth > 690} open={this.props.environment.screenWidth > 690 || this.state.sideBarOpen} onRequestChange={(open) => this.setState({ sideBarOpen: open })}>
               <div className='sidebar-header'>Bubble</div>
               <div className='sidebar-content'>
                   <RaisedButton label="Create Chat" primary={true} fullWidth={true} onClick={::this.openAddChatModal}/>

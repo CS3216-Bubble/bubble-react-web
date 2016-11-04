@@ -3,8 +3,9 @@
 @import 'drawer';
 @import 'chat';
 @import 'viewChat';
+@import 'emoji';
 
-$breakpoint: 500px;
+$breakpoint: 690px;
 
 $chat-min-width: $breakpoint;
 
