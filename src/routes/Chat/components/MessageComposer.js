@@ -16,12 +16,23 @@ export default class MessageComposer extends Component {
       text: '',
       typing: false,
       openEmojiPicker: false,
+      time: 500,
     }
   }
-  handleSubmit (event) {
+  componentDidMount() {
+      this.timer = setInterval(this.tick, 50);
+  }
+  componentWillUnmount (){
+      clearInterval(this.timer);
+  }
+  tick = () => {
+      this.setState({time: this.state.time + 50});
+  }
+
+  handleSubmit = (event) => {
     const { socket, activeChannel, postMessage } = this.props
     const message = event.target.value.trim()
-    if (event.which === 13 && message != '') {
+    if (event.which === 13 && message != '' && this.state.time > 500) {
       event.preventDefault()
       // TODO: make the userId retrievable from backend when persisting user
       var newMessage = {
@@ -32,7 +43,7 @@ export default class MessageComposer extends Component {
       socket.emit('add_message', newMessage)
       postMessage(newMessage)
       socket.emit('stop_typing', { roomId: activeChannel.roomId })
-      this.setState({ text: '', typing: false })
+      this.setState({ text: '', typing: false, time: 0})
     }
   }
   handleChange (event) {
