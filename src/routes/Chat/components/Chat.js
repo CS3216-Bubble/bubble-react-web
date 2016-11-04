@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton'
 import Dialog from 'material-ui/Dialog'
 import { addIncomingMessage, addIncomingReaction, postMessage, showOthersTyping, showOthersTypingStopped, newUserJoined, userExit, leaveChat } from '../../../actions/chat'
+import { hideUser } from '../../../actions/chats'
 
 class Chat extends Component {
 
@@ -110,6 +111,14 @@ class Chat extends Component {
     })
   }
 
+  handleHideUser = () => {
+    this.props.hideUser(this.state.selectedUser.userId, this.props.activeChannel.roomId);
+    this.setState({
+      openUserModal: false,
+      selectedUser: {},
+    });
+  }
+
   leaveChat () {
     this.props.socket.emit('exit_room')
     this.props.leaveChat()
@@ -125,8 +134,22 @@ class Chat extends Component {
     const footerStyle = {
       height: `${0.1 * (window.innerHeight - 72 - 64 - 10)}px`
     }
-    const generateMessages = () =>
-      this.props.chat.messages.map((message, i) => {
+    const generateMessages = () => {
+      const hideIds = this.props.chats.hiddenUsers[this.props.activeChannel.roomId];
+      console.log('hideIds', hideIds);
+      const messages = this.props.chat.messages.filter((message) => {
+        var pass = true;
+        if (hideIds) {
+          hideIds.forEach(id => {
+            if (id === message.userId || (message.data && message.data.userId === id)) {
+              pass = false;
+            }
+          })
+        }
+        return pass;
+      });
+
+      return messages.map((message, i) => {
         if (message.userId === socket.id) {
           return <MessageListItem key={i} messageType='my-message' handleClickOnUser={::this.handleClickOnUser} message={message} />
         } else if (message.messageType === 'user-joined' || message.messageType === 'user-exited') {
@@ -138,6 +161,7 @@ class Chat extends Component {
           return <MessageListItem key={i} messageType='others-message' handleClickOnUser={::this.handleClickOnUser} message={message} />
         }
       })
+    }
 
     const generatePendingMessages = () =>
       this.props.chat.pendingMessages.map((message, i) =>
@@ -247,13 +271,15 @@ class Chat extends Component {
 }
 
 function mapStateToProps (state) {
-  const { chat } = state
+  const { chat, chats } = state
   return {
-    chat
+    chat,
+    chats
   }
 }
 
 const mapDispatch = {
+  hideUser,
   addIncomingMessage,
   addIncomingReaction,
   postMessage,

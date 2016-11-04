@@ -43,3 +43,11 @@ export function toggleCategory (category) {
     category
   }
 }
+
+export function hideUser(userId, roomId) {
+  return {
+    type: types.HIDE_USER,
+    userId,
+    roomId
+  }
+}

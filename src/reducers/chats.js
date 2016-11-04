@@ -16,6 +16,7 @@ const initialState = {
   viewChat: {},
   joinedRooms: [],
   otherRooms: [],
+  hiddenUsers: {},
   categoryFilter: {
     'Rant': false,
     'Funny': false,
@@ -91,6 +92,15 @@ export default function chats (state = initialState, action) {
       tempFilter[action.category] = !tempFilter[action.category]
       return { ...state,
         categoryFilter: tempFilter
+      }
+    case types.HIDE_USER:
+      const hiddenDict = state.hiddenUsers;
+      if (!hiddenDict[action.roomId]) {
+        hiddenDict[action.roomId] = [];
+      }
+      hiddenDict[action.roomId] = _.concat(hiddenDict[action.roomId], action.userId);
+      return { ...state,
+        hiddenUsers: hiddenDict,
       }
     default:
       return state
