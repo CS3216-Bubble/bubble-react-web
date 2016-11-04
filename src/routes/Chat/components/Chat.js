@@ -85,7 +85,7 @@ class Chat extends Component {
     this.setState({openHideUsersModal: false});
   }
 
-  handleClickOnUser (user) {
+  handleClickOnUser = (user) => {
     console.log('user', user)
     this.setState({
       openUserModal: true,
@@ -93,7 +93,7 @@ class Chat extends Component {
     })
   }
 
-  handleCloseUserModal () {
+  handleCloseUserModal = () => {
     this.setState({
       openUserModal: false,
       selectedUser: {},
@@ -249,7 +249,7 @@ class Chat extends Component {
         <Dialog
           modal={false}
           open={this.state.openUserModal}
-          contentStyle={{width: '20%'}}
+          contentStyle={{width: '290px'}}
           onRequestClose={this.handleCloseUserModal}
         >
         <h3 style={{textAlign: 'center'}}>{this.state.selectedUser.username}</h3>
@@ -283,7 +283,7 @@ class Chat extends Component {
           modal={false}
           title="Hidden Users"
           open={this.state.openHideUsersModal}
-          contentStyle={{width: '40%'}}
+          contentStyle={{width: '390px'}}
           onRequestClose={this.handleCloseHideUsers}
         >
         <List>
