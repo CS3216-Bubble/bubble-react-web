@@ -8,8 +8,18 @@ import Divider from 'material-ui/Divider'
 import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton'
 import Dialog from 'material-ui/Dialog'
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import Avatar from 'material-ui/Avatar';
+import {List, ListItem} from 'material-ui/List';
 import { addIncomingMessage, addIncomingReaction, postMessage, showOthersTyping, showOthersTypingStopped, newUserJoined, userExit, leaveChat } from '../../../actions/chat'
-import { hideUser } from '../../../actions/chats'
+import { hideUser, unhideUser } from '../../../actions/chats'
+
+let adjectives = require('../../../utils/adjectives')
+let animals = require('../../../utils/animals')
+let numAvatars = 160;
 
 class Chat extends Component {
 
@@ -23,6 +33,7 @@ class Chat extends Component {
       messages: [],
       typer: '',
       openUserModal: false,
+      openHideUsersModal: false,
       selectedUser: {},
     }
   }
@@ -64,6 +75,14 @@ class Chat extends Component {
     this.props.socket.off('stop_typing')
     this.props.socket.off('join_room')
     this.props.socket.off('exit_room')
+  }
+
+  handleOpenHideUsers = () => {
+    this.setState({openHideUsersModal: true});
+  }
+
+  handleCloseHideUsers = () => {
+    this.setState({openHideUsersModal: false});
   }
 
   handleClickOnUser (user) {
@@ -117,6 +136,34 @@ class Chat extends Component {
       openUserModal: false,
       selectedUser: {},
     });
+  }
+
+  // Utility function for hashing
+  hashID(userId) {
+      var hash = 0;
+      if (userId && userId.length != 0) {
+          for (var i = 0; i < userId.length; i++) {
+              let char = userId.charCodeAt(i);
+              hash = ((hash << 5) - hash) + char;
+              hash = hash & hash;
+          }
+      }
+      return hash;
+  }
+
+  // Name generator
+  generateName(userId) {
+      var hashCode = this.hashID(userId);
+      var adj = adjectives.adjectives;
+      var ani = animals.animals;
+      // Get adjective
+      var adjective = adj[((hashCode % adj.length) + adj.length) % adj.length];
+      adjective = adjective.charAt(0).toUpperCase() + adjective.slice(1);
+      // Get animal
+      var animal = ani[((hashCode % ani.length) + ani.length) % ani.length];
+      animal = animal.charAt(0).toUpperCase() + animal.slice(1);
+      // Return result
+      return adjective + " " + animal;
   }
 
   leaveChat () {
@@ -230,16 +277,47 @@ class Chat extends Component {
         </Dialog>
       </div>
     )
+
+    const hideUserModal = (
+      <Dialog
+          modal={false}
+          title="Hidden Users"
+          open={this.state.openHideUsersModal}
+          contentStyle={{width: '40%'}}
+          onRequestClose={this.handleCloseHideUsers}
+        >
+        <List>
+          { this.props.chats.hiddenUsers[this.props.activeChannel.roomId] && this.props.chats.hiddenUsers[this.props.activeChannel.roomId].map((userId, i) =>
+            <ListItem
+              primaryText={this.generateName(userId)}
+              key={i}
+              leftAvatar={<Avatar src={'http://flathash.com/' + userId } />}
+              rightIconButton={<RaisedButton style={buttonStyle} label="Unhide" secondary={true} onTouchTap={() => {this.props.unhideUser(userId, this.props.activeChannel.roomId); this.handleCloseHideUsers();}}/>}
+            />
+          )}
+
+        </List>
+      </Dialog>
+    )
       
     return (
       <div style={{ padding: '0', height: '100%', width: '100%', display: '-webkit-box' }}>
         <div className='chat-main'>
           <div className='chat-title-div'>
+            <div style={{textAlign:'center'}}>
             <span className='chat-title'>
               {activeChannel.roomName}
             </span>
-            <div className='pull-right'>
-              <RaisedButton label='Leave Room' onTouchTap={() => this.leaveChat()} />
+            </div>
+            <div className='settings-button'>
+              <IconMenu
+                iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+                anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+                targetOrigin={{horizontal: 'right', vertical: 'top'}}
+              >
+                <MenuItem primaryText="Unhide users" onTouchTap={() => this.handleOpenHideUsers()}/>
+                <MenuItem primaryText="Leave room" onTouchTap={() => this.leaveChat()}/>
+              </IconMenu>
             </div>
           </div>
 
@@ -265,6 +343,7 @@ class Chat extends Component {
           </div>
         </div>
         {userModal}
+        {hideUserModal}
       </div>
     )
   }
@@ -280,6 +359,7 @@ function mapStateToProps (state) {
 
 const mapDispatch = {
   hideUser,
+  unhideUser,
   addIncomingMessage,
   addIncomingReaction,
   postMessage,
@@ -287,7 +367,7 @@ const mapDispatch = {
   showOthersTypingStopped,
   newUserJoined,
   userExit,
-  leaveChat
+  leaveChat,
 }
 
 export default connect(mapStateToProps, mapDispatch)(Chat)

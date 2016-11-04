@@ -51,3 +51,11 @@ export function hideUser(userId, roomId) {
     roomId
   }
 }
+
+export function unhideUser(userId, roomId) {
+  return {
+    type: types.UNHIDE_USER,
+    userId,
+    roomId,
+  }
+}

@@ -102,6 +102,17 @@ export default function chats (state = initialState, action) {
       return { ...state,
         hiddenUsers: hiddenDict,
       }
+    case types.UNHIDE_USER:
+      const removeHiddenUser = _.findIndex(state.hiddenUsers[action.roomId], function (u) {
+        return u === action.userId;
+      })
+      const newHiddenUsers = state.hiddenUsers[action.roomId].filter( userId => {
+        return userId !== action.userId; 
+      })
+      state.hiddenUsers[action.roomId] = newHiddenUsers;
+      return { ...state,
+        hiddenUsers: state.hiddenUsers
+      }
     default:
       return state
   }

@@ -13,7 +13,6 @@
 	font-size: 2.3em;
 	padding-left: 0.2em;
 	height: 72px;
-	text-align: center;
 
 	.chat-title {
 		vertical-align:  -webkit-baseline-middle;
@@ -28,6 +27,7 @@
 	padding-bottom: 1em;
 	order: 1;
 	background-color: #f9fafa;
+	margin-right: -10px
 }
 
 .chat-footer {
@@ -142,4 +142,9 @@ li {
   float: left;
   margin-right: 10px;
   margin-top: -8px;
+}
+
+.settings-button {
+	float: right;
+    margin-top: -50px;
 }

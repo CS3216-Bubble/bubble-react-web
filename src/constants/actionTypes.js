@@ -7,6 +7,7 @@ export const LEAVE_CHAT = 'LEAVE_CHAT'
 export const VIEW_CHAT = 'VIEW_CHAT'
 export const TOGGLE_CATEGORY = 'TOGGLE_CATEGORY'
 export const HIDE_USER = 'HIDE_USER'
+export const UNHIDE_USER = 'UNHIDE_USER'
 
 // CHAT
 export const ADD_INCOMING_MESSAGE = 'ADD_INCOMING_MESSAGE'
