@@ -49,6 +49,8 @@ export default function chat (state = initialState, action) {
         messages: []
       }
     case types.JOIN_CHAT:
+      // Clear old pending messages
+      state.pendingMessages = [];
       action.chat.messages.sort(function (a, b) {
         return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
       });
