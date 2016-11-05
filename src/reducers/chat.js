@@ -2,7 +2,7 @@ import * as types from '../constants/actionTypes'
 import _ from 'lodash'
 import Moment from 'moment'
 
-let socket = require('./chats')
+let chats = require('./chats')
 let adjectives = require('../utils/adjectives')
 let animals = require('../utils/animals')
 let numAvatars = 160;
@@ -28,7 +28,7 @@ function hashID(userId) {
 }
 
 // Name generator
-function generateName(userId) {
+export function generateName(userId) {
     var hashCode = hashID(userId);
     var adj = adjectives.adjectives;
     var ani = animals.animals;
@@ -53,7 +53,7 @@ export default function chat (state = initialState, action) {
         return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
       });
       action.chat.messages.forEach(m => {
-        m.username = generateName(m.userId)
+        m.username = m.bubbleId ? generateName(m.bubbleId) : generateName(m.userId)
         if (m.messageType == 'REACTION') {
           m.targetUsername = generateName(m.targetUser);
         }
@@ -72,7 +72,7 @@ export default function chat (state = initialState, action) {
         return m.message === action.msg.content
       })
       state.pendingMessages.splice(removePendingIndex, 1)
-      action.msg.username = generateName(action.msg.userId)
+      action.msg.username = action.msg.bubbleId ?  generateName(action.msg.bubbleId) : generateName(action.msg.userId)
       if (action.msg.messageType == 'REACTION') {
         action.msg.targetUsername = generateName(action.msg.targetUser);
       }
@@ -81,7 +81,7 @@ export default function chat (state = initialState, action) {
         pendingMessages: state.pendingMessages
       }
     case types.POST_MESSAGE:
-      action.msg.username = generateName(socket.socket.id);
+      action.msg.username = generateName(chats.bubbleId);
       return { ...state,
         pendingMessages: _.concat(state.pendingMessages, action.msg)
       }
@@ -95,13 +95,13 @@ export default function chat (state = initialState, action) {
       }
     case types.NEW_USER_JOINED:
       const join_msg = _.assign(action, { messageType: 'user-joined' })
-      join_msg.data.username = generateName(action.data.userId);
+      join_msg.data.username = action.data.bubbleId ? generateName(action.data.bubbleId) : generateName(action.data.userId);
       return { ...state,
         messages: _.concat(state.messages, join_msg)
       }
     case types.USER_EXIT:
       const exit_msg = _.assign(action, { messageType: 'user-exited' })
-      exit_msg.data.username = generateName(action.data.userId);
+      exit_msg.data.username = action.data.bubbleId ? generateName(action.data.bubbleId) : generateName(action.data.userId);
       return { ...state,
         messages: _.concat(state.messages, exit_msg)
       }

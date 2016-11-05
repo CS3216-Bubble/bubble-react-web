@@ -8,6 +8,7 @@ export default class MessageComposer extends Component {
   static propTypes = {
     activeChannel: PropTypes.object.isRequired,
     socket: PropTypes.object.isRequired,
+    bubbleId: PropTypes.string.isRequired,
     postMessage: PropTypes.func.isRequired
   };
   constructor (props, context) {
@@ -30,7 +31,7 @@ export default class MessageComposer extends Component {
   }
 
   handleSubmit = (event) => {
-    const { socket, activeChannel, postMessage } = this.props
+    const { socket, activeChannel, postMessage, bubbleId } = this.props
     const message = event.target.value.trim()
     if (event.which === 13 && message != '' && this.state.time > 500) {
       event.preventDefault()
@@ -38,23 +39,24 @@ export default class MessageComposer extends Component {
       var newMessage = {
         roomId: this.props.activeChannel.roomId,
         message,
-        userId: socket.id
+        userId: socket.id,
+        bubbleId
       }
       socket.emit('add_message', newMessage)
       postMessage(newMessage)
-      socket.emit('stop_typing', { roomId: activeChannel.roomId })
+      socket.emit('stop_typing', { roomId: activeChannel.roomId, bubbleId })
       this.setState({ text: '', typing: false, time: 0})
     }
   }
   handleChange (event) {
-    const { socket, user, activeChannel } = this.props
+    const { socket, user, activeChannel, bubbleId } = this.props
     this.setState({ text: event.target.value })
     if (event.target.value.length > 0 && !this.state.typing) {
-      socket.emit('typing', { roomId: activeChannel.roomId })
+      socket.emit('typing', { roomId: activeChannel.roomId, bubbleId })
       this.setState({ typing: true })
     }
     if (event.target.value.length === 0 && this.state.typing) {
-      socket.emit('stop_typing', { roomId: activeChannel.roomId })
+      socket.emit('stop_typing', { roomId: activeChannel.roomId, bubbleId })
       this.setState({ typing: false })
     }
   }

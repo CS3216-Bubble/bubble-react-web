@@ -2,8 +2,22 @@ import * as types from '../constants/actionTypes'
 import io from 'socket.io-client'
 import { browserHistory, Router } from 'react-router'
 
-let host = 'https://getbubblechat.com';
-export const socket = io(host);
+let BUBBLE_ID = 'bubbleId';
+let host = 'https://getbubblechat.com/?bubble=';
+var uuid = require('uuid4');
+if (!window.localStorage[BUBBLE_ID]) {
+  // no bubble id stored, generate a new one
+  let bubbleId = uuid();
+  window.localStorage[BUBBLE_ID] = bubbleId;
+} 
+export const bubbleId = window.localStorage[BUBBLE_ID];
+export const socket = io(host + bubbleId);
+
+
+
+let chat = require('./chat');
+
+
 // if (__DEV__) {
 //   host = window.location.protocol + '//' + window.location.hostname + ':3000';
 // } else {
@@ -12,6 +26,7 @@ export const socket = io(host);
 const initialState = {
   loaded: false,
   socket: socket,
+  bubbleId: bubbleId,
   activeChannel: {},
   viewChat: {},
   joinedRooms: [],
@@ -61,7 +76,8 @@ export default function chats (state = initialState, action) {
       if (state.activeChannel.roomId) {
         state.socket.emit('exit_room', {
           roomId: state.activeChannel.roomId,
-          userId: state.socket.id
+          userId: state.socket.id,
+          bubbleId: chats.bubbleId,
         })
 
         const oldChat = state.activeChannel
@@ -73,6 +89,9 @@ export default function chats (state = initialState, action) {
       }
       return state
     case types.VIEW_CHAT:
+      action.chat.createdByBubbleUsername = action.chat.createdByBubbleId ? chat.generateName(action.chat.createdByBubbleId) : undefined;
+      action.chat.createdByUsername = action.chat.createdBy ? chat.generateName(action.chat.createdBy) : undefined;
+
       return { ...state,
         viewChat: action.chat
       }

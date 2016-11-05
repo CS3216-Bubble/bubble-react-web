@@ -118,7 +118,8 @@ class AppContainer extends Component {
 
     this.props.chats.socket.emit('view_room', {
       roomId: chat.roomId,
-      userId: this.props.chats.socket.id
+      userId: this.props.chats.socket.id,
+      bubbleId: this.props.chats.bubbleId,
     })
   }
 

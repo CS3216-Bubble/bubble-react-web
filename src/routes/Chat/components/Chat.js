@@ -101,12 +101,13 @@ class Chat extends Component {
   }
 
   handleThankReaction = () => {
-    const {socket, activeChannel} = this.props;
+    const {socket, activeChannel, chats} = this.props;
+    // NOTE BubbleId
     var request = {
-      user: socket.id,
+      user: chats.bubbleId,
       roomId: activeChannel.roomId,
       reaction: 'THANK',
-      targetUser: this.state.selectedUser.userId
+      targetUser: this.state.selectedUser.bubbleId || this.state.selectedUser.userId
     };
     this.props.socket.emit('add_reaction', request);
     this.setState({
@@ -116,12 +117,13 @@ class Chat extends Component {
   }
 
   handleCheerReaction = () => {
-    const {socket, activeChannel} = this.props;
+    const {socket, activeChannel, chats} = this.props;
+    // NOTE BubbleId
     var request = {
-      user: socket.id,
+      user: chats.bubbleId,
       roomId: activeChannel.roomId,
       reaction: 'CHEER',
-      targetUser: this.state.selectedUser.userId
+      targetUser:  this.state.selectedUser.bubbleId || this.state.selectedUser.userId
     };
     this.props.socket.emit('add_reaction', request);
     this.setState({
@@ -131,7 +133,7 @@ class Chat extends Component {
   }
 
   handleHideUser = () => {
-    this.props.hideUser(this.state.selectedUser.userId, this.props.activeChannel.roomId);
+    this.props.hideUser(this.state.selectedUser.bubbleId || this.state.selectedUser.userId, this.props.activeChannel.roomId);
     this.setState({
       openUserModal: false,
       selectedUser: {},
@@ -167,7 +169,7 @@ class Chat extends Component {
   }
 
   leaveChat () {
-    this.props.socket.emit('exit_room')
+    this.props.socket.emit('exit_room', {bubbleId: this.props.chats.bubbleId})
     this.props.leaveChat()
     browserHistory.push('/')
   }
@@ -188,7 +190,7 @@ class Chat extends Component {
         var pass = true;
         if (hideIds) {
           hideIds.forEach(id => {
-            if (id === message.userId || (message.data && message.data.userId === id)) {
+            if (id === message.bubbleId || id === message.userId || (message.data && message.data.userId === id)) {
               pass = false;
             }
           })
@@ -197,7 +199,7 @@ class Chat extends Component {
       });
 
       return messages.map((message, i) => {
-        if (message.userId === socket.id) {
+        if (message.sentByMe || message.bubbleId === this.props.chats.bubbleId || message.userId === socket.id) {
           return <MessageListItem key={i} messageType='my-message' handleClickOnUser={::this.handleClickOnUser} message={message} />
         } else if (message.messageType === 'user-joined' || message.messageType === 'user-exited') {
             // Not a message- user joined
@@ -254,7 +256,7 @@ class Chat extends Component {
         >
         <h3 style={{textAlign: 'center'}}>{this.state.selectedUser.username}</h3>
         <Divider />
-        <img style={imageStyle} src= {'http://flathash.com/' + (this.state.selectedUser.userId ?  this.state.selectedUser.userId  : '1') } alt="" />
+        <img style={imageStyle} src= {'http://flathash.com/' + (this.state.selectedUser.bubbleId ? this.state.selectedUser.bubbleId : this.state.selectedUser.userId || '1') } alt="" />
         <div>
           <RaisedButton
             style={buttonStyle}
@@ -330,7 +332,7 @@ class Chat extends Component {
           </ul>
 
           <div className='chat-footer' style={footerStyle}>
-            <MessageComposer socket={socket} activeChannel={activeChannel} postMessage={postMessage} />
+            <MessageComposer socket={socket} activeChannel={activeChannel} postMessage={postMessage} bubbleId={this.props.chats.bubbleId} />
             <div style={{ flexShrink:'0', fontSize: '1em', width: '100%', opacity: '0.5' }}>
               {this.props.chat.typer !== '' &&
                 <div className='pull-right'>

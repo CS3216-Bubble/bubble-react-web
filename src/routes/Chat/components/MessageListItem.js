@@ -25,7 +25,7 @@ export default class MessageListItem extends Component {
       return (
         <li className='row'>
           <div className='user-exited-message'>
-            <img style={smallImageStyle} src= {'http://flathash.com/' + (message.userId ?  message.userId : '1') } alt="" />
+            <img style={smallImageStyle} src= {'http://flathash.com/' + (message.bubbleId ?  message.bubbleId : (message.userId || '1')) } alt="" />
             {message.username} thanked {message.targetUsername} 
             <img style={smallImageStyle} src= {'http://flathash.com/' + (message.targetUser ?  message.targetUser : '1') } alt="" />
           </div>
@@ -35,7 +35,7 @@ export default class MessageListItem extends Component {
       return (
         <li className='row'>
           <div className='user-exited-message'>
-            <img style={smallImageStyle} src= {'http://flathash.com/' + (message.userId ?  message.userId : '1') } alt="" />
+            <img style={smallImageStyle} src= {'http://flathash.com/' + (message.bubbleId ?  message.bubbleId : (message.userId || '1')) } alt="" />
             {message.username} cheered {message.targetUsername} 
             <img style={smallImageStyle} src= {'http://flathash.com/' + (message.targetUser ?  message.targetUser : '1') } alt="" />
           </div>
@@ -69,11 +69,11 @@ export default class MessageListItem extends Component {
           <div className='talk-bubble round'>
             <div className='row'>
               <div className='col-xs-3'>
-                <img style={bigImageStyle} src= {'http://flathash.com/' + (message.userId ?  message.userId : '1') } alt="" />
+                <img style={bigImageStyle} src= {'http://flathash.com/' + (message.bubbleId ?  message.bubbleId : (message.userId || '1')) } alt="" />
               </div>
               <div className='col-xs-9'>
                 <span>
-                  <b><button className='username-btn' onClick={this.handleClick.bind(this, {username: message.username, userId: message.userId})}>{message.username }</button></b>
+                  <b><button className='username-btn' onClick={this.handleClick.bind(this, {username: message.username, userId: message.userId, bubbleId: message.bubbleId})}>{message.username }</button></b>
                 </span>
                 <div className='message'>{message.message || message.content }</div>
               </div>
@@ -85,16 +85,16 @@ export default class MessageListItem extends Component {
       return (
         <li className='row'>
           <div className='user-joined-message'>
-            <img style={smallImageStyle} src= {'http://flathash.com/' + (message.data.userId ?  message.data.userId : '1') } alt="" />
+            <img style={smallImageStyle} src= {'http://flathash.com/' + (message.bubbleId ?  message.bubbleId : (message.userId || '1')) } alt="" />
             {message.data.username} joined
           </div>
         </li>
         )
-    } else if (messageType === 'user-exited' && message.data.userId) {
+    } else if (messageType === 'user-exited' && ( message.data.bubbleId || message.data.userId) ) {
       return (
         <li className='row'>
           <div className='user-exited-message'>
-            <img style={smallImageStyle} src= {'http://flathash.com/' + (message.data.userId ?  message.data.userId : '1') } alt="" />
+            <img style={smallImageStyle} src= {'http://flathash.com/' + (message.bubbleId ?  message.bubbleId : (message.userId || '1')) } alt="" />
             {message.data.username} left
           </div>
         </li>
