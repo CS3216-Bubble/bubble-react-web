@@ -368,12 +368,12 @@ class AppContainer extends Component {
         <MuiThemeProvider>
           <div style={{ height: `90%` }} >
             <AppBar
-              title='Bubble'
+              title={<img src={require('../images/logo_white.png')} style={{height: 40}}/>}
               iconClassNameRight='muidocs-icon-navigation-expand-more'
               onLeftIconButtonTouchTap={this.handleSideBarToggle}
             />
             <Drawer className='drawer' docked={this.props.environment.screenWidth > 690} open={this.props.environment.screenWidth > 690 || this.state.sideBarOpen} onRequestChange={(open) => this.setState({ sideBarOpen: open })}>
-              <div className='sidebar-header'>Bubble</div>
+              <div className='sidebar-header'><img src={require('../images/logo_white.png')} style={{height: 40}}/></div>
               <div className='sidebar-content'>
                   <RaisedButton label="Create Chat" primary={true} fullWidth={true} onClick={::this.openAddChatModal}/>
                     <TextField
