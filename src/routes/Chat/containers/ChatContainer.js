@@ -1,9 +1,19 @@
 import React, { Component, PropTypes } from 'react'
 import Chat from '../components/Chat'
+import _ from 'lodash'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 
 class ChatContainer extends Component {
+
+  componentWillMount () {
+    console.log(this.props.activeChannel);
+    if (_.isEmpty(this.props.activeChannel)){
+      browserHistory.push('/')
+      console.log('entered');
+    }
+  }
 
   render () {
     return (
