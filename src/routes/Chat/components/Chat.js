@@ -256,7 +256,7 @@ class Chat extends Component {
         >
         <h3 style={{textAlign: 'center'}}>{this.state.selectedUser.username}</h3>
         <Divider />
-        <img style={imageStyle} src= {'http://flathash.com/' + (this.state.selectedUser.bubbleId ? this.state.selectedUser.bubbleId : this.state.selectedUser.userId || '1') } alt="" />
+        <img style={imageStyle} src= {'https://flathash.com/' + (this.state.selectedUser.bubbleId ? this.state.selectedUser.bubbleId : this.state.selectedUser.userId || '1') } alt="" />
         <div>
           <RaisedButton
             style={buttonStyle}
@@ -293,7 +293,7 @@ class Chat extends Component {
             <ListItem
               primaryText={this.generateName(userId)}
               key={i}
-              leftAvatar={<Avatar src={'http://flathash.com/' + userId } />}
+              leftAvatar={<Avatar src={'https://flathash.com/' + userId } />}
               rightIconButton={<RaisedButton style={buttonStyle} label="Unhide" secondary={true} onTouchTap={() => {this.props.unhideUser(userId, this.props.activeChannel.roomId); this.handleCloseHideUsers();}}/>}
             />
           )}
