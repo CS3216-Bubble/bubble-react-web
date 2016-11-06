@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import moment from 'moment'
 
 import { initEnvironment } from '../actions/environment'
-import { addChat, loadChats, viewChat, joinChat, addChatRoomId, toggleCategory } from '../actions/chats'
+import { addChat, loadChats, viewChat, joinChat, addChatRoomId, toggleCategory, getBubbleId } from '../actions/chats'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import AppBar from 'material-ui/AppBar'
@@ -78,6 +78,9 @@ class AppContainer extends Component {
   componentDidMount () {
     var _self = this
     _self.props.initEnvironment()
+    _self.props.chats.socket.on('my_id', function (bubbleId) {
+      _self.props.getBubbleId(bubbleId)
+    })
     _self.props.chats.socket.on('list_rooms', function (msg) {
       _self.props.loadChats(msg)
     })
@@ -419,6 +422,7 @@ function mapStateToProps (state) {
 }
 
 const mapDispatch = {
+  getBubbleId,
   addChat,
   loadChats,
   joinChat,

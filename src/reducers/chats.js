@@ -2,16 +2,16 @@ import * as types from '../constants/actionTypes'
 import io from 'socket.io-client'
 import { browserHistory, Router } from 'react-router'
 
-let BUBBLE_ID = 'bubbleId';
+let BUBBLE_STATE = 'bubbleId';
 let host = 'https://getbubblechat.com/?bubble=';
 var uuid = require('uuid4');
-if (!window.localStorage[BUBBLE_ID]) {
+if (!window.localStorage[BUBBLE_STATE]) {
   // no bubble id stored, generate a new one
-  let bubbleId = uuid();
-  window.localStorage[BUBBLE_ID] = bubbleId;
+  let bubbleState = uuid();
+  window.localStorage[BUBBLE_STATE] = bubbleState;
 } 
-export const bubbleId = window.localStorage[BUBBLE_ID];
-export const socket = io(host + bubbleId);
+export const bubbleState = window.localStorage[BUBBLE_STATE];
+export const socket = io(host + bubbleState);
 
 
 
@@ -26,7 +26,7 @@ let chat = require('./chat');
 const initialState = {
   loaded: false,
   socket: socket,
-  bubbleId: bubbleId,
+  bubbleId: '',
   activeChannel: {},
   viewChat: {},
   joinedRooms: [],
@@ -45,6 +45,11 @@ const initialState = {
 
 export default function chats (state = initialState, action) {
   switch (action.type) {
+    case types.GET_BUBBLE_ID:
+      return {
+        ...state,
+        bubbleId: action.bubbleId,
+      }
     case types.ADD_CHAT:
       const allRooms = _.concat(state.joinedRooms, state.otherRooms)
       if (allRooms.filter(chat => chat.roomName === action.chat.roomName).length !== 0) {

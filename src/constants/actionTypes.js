@@ -1,3 +1,6 @@
+// SETTINGS
+export const GET_BUBBLE_ID = 'GET_BUBBLE_ID'
+
 // CHATS
 export const ADD_CHAT = 'ADD_CHAT'
 export const ADD_CHAT_ROOMID = 'ADD_CHAT_ROOMID'
