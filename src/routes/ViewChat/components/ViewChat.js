@@ -69,9 +69,11 @@ class ViewChat extends Component {
     return (
       <div style={{ height: '100%', width: '100%' }}>
         <header className='chat-title-div'>
-          <span className='chat-title'>
-            {this.props.chat.roomName}
-          </span>
+          <div style={{textAlign:'center'}}>
+            <span className='chat-title'>
+              {this.props.chat.roomName}
+            </span>
+          </div>
         </header>
         <Divider />
         <div style={{ padding: '15px' }}>
