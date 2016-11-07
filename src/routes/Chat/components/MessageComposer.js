@@ -70,14 +70,20 @@ export default class MessageComposer extends Component {
     }
   }
   render () {
-    const emojiPicker = (        
-      <EmojiPicker search={true} onChange={(data) => {
-        let char = eval('"\\u{' + data.unicode + '}"')
-        this.setState({
-          text: this.state.text + char + ' ',
-          openEmojiPicker: false,
-        })
-      }} />
+    const bodyStyle = {
+      position: 'absolute',
+      bottom: '70px',
+    }
+    const emojiPicker = (
+      <div style={bodyStyle}>
+        <EmojiPicker search={true} onChange={(data) => {
+          let char = eval('"\\u{' + data.unicode + '}"')
+          this.setState({
+            text: this.state.text + char + ' ',
+            openEmojiPicker: false,
+          })
+        }} />
+      </div>
     )
 
     return (
