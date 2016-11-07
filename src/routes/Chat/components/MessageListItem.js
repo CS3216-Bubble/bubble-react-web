@@ -45,7 +45,7 @@ export default class MessageListItem extends Component {
       return (
         <li className='my-message row'>
           <div className='talk-bubble round pull-right'>
-            <div>
+            <div style={{float:'right'}}>
               <b>{message.username}</b>
             </div>
             <div className='message'>{ message.message || message.content }</div>
@@ -56,7 +56,7 @@ export default class MessageListItem extends Component {
       return (
         <li className='my-message row'>
           <div className='talk-bubble round pull-right transparent-bg'>
-            <div>
+            <div style={{float:'right'}}>
               <b>{message.username}</b>
             </div>
             <div className='message'>{ message.message || message.content }</div>
