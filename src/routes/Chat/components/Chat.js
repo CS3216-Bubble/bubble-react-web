@@ -328,17 +328,14 @@ class Chat extends Component {
             { generatePendingMessages() }
           </ul>
 
+          {this.props.chat.typer !== '' &&
+            <div className='chat-typing'>
+              <TypingListItem username={this.generateName(this.props.chat.typer)} />
+              <span> is typing...</span>
+            </div>}
+
           <div className='chat-footer'>
             <MessageComposer socket={socket} activeChannel={activeChannel} postMessage={postMessage} bubbleId={this.props.chats.bubbleId} />
-            <div style={{ flexShrink:'0', fontSize: '1em', width: '100%', opacity: '0.5' }}>
-              {this.props.chat.typer !== '' &&
-                <div className='pull-right'>
-                  <span>
-                    <TypingListItem username={this.generateName(this.props.chat.typer)} />
-                    <span> is typing</span>
-                  </span>
-                </div>}
-            </div>
           </div>
         </div>
         {userModal}
