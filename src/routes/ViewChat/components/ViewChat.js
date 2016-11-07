@@ -76,7 +76,7 @@ class ViewChat extends Component {
           </div>
         </header>
         <Divider />
-        <div style={{ padding: '15px' }}>
+        <div style={{ padding: '15px 15px 50px 15px' }}>
           <div className='row'>
             <h4 className='col-md-3 right-label'><b>Description:</b></h4>
             <h4 className='col-md-9'>{this.props.chat.roomDescription ? this.props.chat.roomDescription : 'No Description' }</h4>
