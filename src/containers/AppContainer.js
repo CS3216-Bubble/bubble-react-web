@@ -289,7 +289,7 @@ class AppContainer extends Component {
       }
 
       return hotRooms.map(chat =>
-        <MenuItem innerDivStyle={menuItemStyle} onTouchTap={() => this.joinChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
+        <MenuItem innerDivStyle={menuItemStyle} onTouchTap={() => this.viewChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
       )
     }
 
