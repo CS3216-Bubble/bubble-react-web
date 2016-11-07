@@ -29,6 +29,7 @@ const initialState = {
   bubbleId: '',
   activeChannel: {},
   viewChat: {},
+  data: [],
   joinedRooms: [],
   otherRooms: [],
   hiddenUsers: {},
@@ -66,8 +67,22 @@ export default function chats (state = initialState, action) {
         activeChannel: tempAddChannel
       }
     case types.LOAD_CHATS:
+      let otherRooms = action.chats.filter( (chat) => {
+        if (!chat) return false;
+
+        var pass = true;
+        state.joinedRooms.forEach((joined) => {
+          if (!joined) return false;
+          if (joined.roomId === chat.roomId) {
+            pass = false;
+          }
+        })
+        return pass;
+      })
+
       return { ...state,
-        otherRooms: _.difference(action.chats, state.joinedRooms)
+        otherRooms: otherRooms,
+        data: action.chats
       }
     case types.JOIN_CHAT:
       // cant use lodash difference to remove other rooms because obj is different
