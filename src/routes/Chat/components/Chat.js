@@ -86,7 +86,6 @@ class Chat extends Component {
   }
 
   handleClickOnUser = (user) => {
-    console.log('user', user)
     this.setState({
       openUserModal: true,
       selectedUser: user,
@@ -185,7 +184,6 @@ class Chat extends Component {
     }
     const generateMessages = () => {
       const hideIds = this.props.chats.hiddenUsers[this.props.activeChannel.roomId];
-      console.log('hideIds', hideIds);
       const messages = this.props.chat.messages.filter((message) => {
         var pass = true;
         if (hideIds) {

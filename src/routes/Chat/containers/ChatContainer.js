@@ -8,10 +8,8 @@ import { browserHistory } from 'react-router'
 class ChatContainer extends Component {
 
   componentWillMount () {
-    console.log(this.props.activeChannel);
     if (_.isEmpty(this.props.activeChannel)){
       browserHistory.push('/')
-      console.log('entered');
     }
   }
 

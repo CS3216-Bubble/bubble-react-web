@@ -60,7 +60,6 @@ export default function chat (state = initialState, action) {
           m.targetUsername = generateName(m.targetUser);
         }
       });
-      console.log(action.chat.messages);
       return { ...state,
         messages: action.chat.messages
       }
