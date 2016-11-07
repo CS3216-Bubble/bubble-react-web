@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { FormControl } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { postMessage } from '../../../actions/chat'
 import EmojiPicker from 'emojione-picker';
 
@@ -30,11 +30,20 @@ export default class MessageComposer extends Component {
       this.setState({time: this.state.time + 50});
   }
 
-  handleSubmit = (event) => {
-    const { socket, activeChannel, postMessage, bubbleId } = this.props
-    const message = event.target.value.trim()
-    if (event.which === 13 && message != '' && this.state.time > 500) {
+  handleKeyDown = (event) => {
+    if (event.which === 13) {
       event.preventDefault()
+      this.handleSubmit();
+    }
+  }
+
+  handleSubmit = () => {
+    const { socket, activeChannel, postMessage, bubbleId } = this.props
+    if (this.state.time > 500) {
+      const message = this.state.text.trim();
+      if (message === '') {
+        return false;
+      }
       // TODO: make the userId retrievable from backend when persisting user
       var newMessage = {
         roomId: this.props.activeChannel.roomId,
@@ -73,18 +82,21 @@ export default class MessageComposer extends Component {
 
     return (
       <div className='chat-message-field'>
-        <div style={{width:'10%'}}>
-          <button className='emoji-button' onTouchTap={(event) => this.setState({openEmojiPicker: !this.state.openEmojiPicker})}>☺</button>
-        </div>
-        <FormControl
-          className='message-composer'
-          type='text'
-          autoFocus='true'
-          placeholder='Type here to chat!'
-          value={this.state.text}
-          onChange={::this.handleChange}
-          onKeyDown={::this.handleSubmit}
-        />
+          <Button className='emoji-button' onTouchTap={(event) => this.setState({openEmojiPicker: !this.state.openEmojiPicker})}>
+      ☺
+          </Button>
+            <input
+              className='message-composer'
+              type='text'
+              autoFocus='true'
+              placeholder='Type here to chat!'
+              value={this.state.text}
+              onChange={::this.handleChange}
+              onKeyDown={::this.handleKeyDown}
+            />
+          <Button type="submit" className='send-button' onTouchTap={::this.handleSubmit} style={{border: 'none'}}>
+            <i className="material-icons">send</i>
+          </Button>
         { this.state.openEmojiPicker ? emojiPicker : [] }
       </div>
     )
