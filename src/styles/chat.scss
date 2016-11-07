@@ -1,3 +1,5 @@
+$chat-bg-color: #f9fafa;
+
 .chat-main {
 	margin: 0;
 	width: 100%;
@@ -12,7 +14,7 @@
 	order: 0;
 	font-size: 2.3em;
 	padding-left: 0.2em;
-	height: 72px;
+	min-height: 72px;
 
 	.chat-title {
 		vertical-align:  -webkit-baseline-middle;
@@ -26,22 +28,21 @@
 	padding: 0;
 	padding-bottom: 1em;
 	order: 1;
-	background-color: #f9fafa;
+	background-color: $chat-bg-color;
 }
 
 .chat-footer {
-	order: 1;
-  padding-left: 15px;
-  padding-right: 15px;
+    order: 1;
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 60px;
+    bottom: 0;
 }
 
 .chat-message-field {
-	z-index: 52;
-	left: 21.1rem;
-	right: 1rem;
-	width: 100%;
-	order: 2;
-	margin-top: 0.5em;
+    height: 60px;
+    display: flex;
+    flex-flow: row wrap;
 }
 
 .my-message {
@@ -107,30 +108,20 @@ li {
 	text-align: center;
 }
 
+.chat-typing {
+    text-align: right;
+    background-color: $chat-bg-color;
+    color: #95a5a6;
+}
 
 .message-composer {
-	width: 95%;
-	margin-top: 15px;
+    flex-grow: 2;
+    outline: none;
+    border: 0;
+}
 
-	 @media (max-width: 1225px) {
-	 	width: 94%;
-	 }
-
-	@media (max-width: 1070px) {
-	 	width: 93%;
-	 }
-
-	 @media (max-width: 960px) {
-	 	width: 92%;
-	 }
-
-	 @media (max-width: 870px) {
-	 	width: 90%;
-	 }
-
-	@media (max-width: 750px) {
-	 	width: 88%;
-	 }
+.send-button:focus {
+    outline: none;
 }
 
 .emoji-button {
