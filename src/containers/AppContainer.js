@@ -233,6 +233,12 @@ class AppContainer extends Component {
 
       )
 
+    const menuItemStyle = {
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      width: '240px',
+    }
+
     const generateFilteredJoinedRooms = () => {
       const filters = Object.keys(_.pickBy(this.props.chats.categoryFilter))
       var filteredJoinedRooms = this.props.chats.joinedRooms.filter((chat) => {
@@ -260,7 +266,7 @@ class AppContainer extends Component {
       }
 
       return filteredJoinedRooms.map(chat =>
-        <MenuItem onTouchTap={() => this.joinChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
+        <MenuItem innerDivStyle={menuItemStyle} onTouchTap={() => this.joinChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
       )
     }
 
@@ -283,7 +289,7 @@ class AppContainer extends Component {
       }
 
       return hotRooms.map(chat =>
-        <MenuItem onTouchTap={() => this.joinChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
+        <MenuItem innerDivStyle={menuItemStyle} onTouchTap={() => this.joinChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
       )
     }
 
@@ -319,7 +325,7 @@ class AppContainer extends Component {
       })
 
       return filteredOtherRooms.map(chat =>
-        <MenuItem onTouchTap={() => this.viewChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
+        <MenuItem innerDivStyle={menuItemStyle} onTouchTap={() => this.viewChat(chat)} key={chat.roomId}>{chat.roomName}</MenuItem>
       )
     }
 
