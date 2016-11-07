@@ -337,7 +337,7 @@ class Chat extends Component {
               {this.props.chat.typer !== '' &&
                 <div className='pull-right'>
                   <span>
-                    <TypingListItem username={this.props.chat.typer} />
+                    <TypingListItem username={this.generateName(this.props.chat.typer)} />
                     <span> is typing</span>
                   </span>
                 </div>}
