@@ -68,10 +68,10 @@ export default class MessageListItem extends Component {
         <li className='others-message row'>
           <div className='talk-bubble round'>
             <div className='row'>
-              <div className='col-xs-3'>
+              <div className='col-md-1'>
                 <img style={bigImageStyle} src= {'https://flathash.com/' + (message.bubbleId ?  message.bubbleId : (message.userId || '1')) } alt="" />
               </div>
-              <div className='col-xs-9'>
+              <div className='col-md-11'>
                 <span>
                   <b><button className='username-btn' onClick={this.handleClick.bind(this, {username: message.username, userId: message.userId, bubbleId: message.bubbleId})}>{message.username }</button></b>
                 </span>
