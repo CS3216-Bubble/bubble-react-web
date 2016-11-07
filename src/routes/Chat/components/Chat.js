@@ -179,10 +179,7 @@ class Chat extends Component {
     const { socket, activeChannel, postMessage } = this.props
 
     const bodyStyle = {
-      height: `${0.9 * (window.innerHeight - 72 - 64 - 10)}px`
-    }
-    const footerStyle = {
-      height: `${0.1 * (window.innerHeight - 72 - 64 - 10)}px`
+      height: `${window.innerHeight - 72 - 64 - 60}px`
     }
     const generateMessages = () => {
       const hideIds = this.props.chats.hiddenUsers[this.props.activeChannel.roomId];
@@ -331,7 +328,7 @@ class Chat extends Component {
             { generatePendingMessages() }
           </ul>
 
-          <div className='chat-footer' style={footerStyle}>
+          <div className='chat-footer'>
             <MessageComposer socket={socket} activeChannel={activeChannel} postMessage={postMessage} bubbleId={this.props.chats.bubbleId} />
             <div style={{ flexShrink:'0', fontSize: '1em', width: '100%', opacity: '0.5' }}>
               {this.props.chat.typer !== '' &&
