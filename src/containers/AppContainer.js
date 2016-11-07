@@ -375,7 +375,7 @@ class AppContainer extends Component {
     return (
       <Provider store={store}>
         <MuiThemeProvider>
-          <div style={{ height: `90%` }} >
+          <div>
             <AppBar
               title={<img src={require('../images/logo_white.png')} style={{height: 40}}/>}
               iconClassNameRight='muidocs-icon-navigation-expand-more'
