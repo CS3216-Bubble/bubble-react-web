@@ -178,8 +178,9 @@ class Chat extends Component {
   render () {
     const { socket, activeChannel, postMessage } = this.props
 
+    const typingHeight = this.props.chat.typer === '' ? 0 : 20;
     const bodyStyle = {
-      height: `${window.innerHeight - 72 - 64 - 60}px`
+      height: `${window.innerHeight - 72 - 64 - 60 - typingHeight}px`
     }
     const generateMessages = () => {
       const hideIds = this.props.chats.hiddenUsers[this.props.activeChannel.roomId];
