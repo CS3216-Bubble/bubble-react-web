@@ -60,6 +60,10 @@ class Chat extends Component {
         this.props.userExit(msg)
       }
     })
+    socket.on('i_exit', () => {
+      this.props.leaveChat()
+      browserHistory.push('/')
+    })
     const messageList = this.refs.messageList
     messageList.scrollTop = messageList.scrollHeight
   }
@@ -168,9 +172,7 @@ class Chat extends Component {
   }
 
   leaveChat () {
-    this.props.socket.emit('exit_room', {bubbleId: this.props.chats.bubbleId})
-    this.props.leaveChat()
-    browserHistory.push('/')
+    this.props.socket.emit('exit_room', {roomId: this.props.activeChannel.roomId})
   }
 
   render () {
