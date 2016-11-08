@@ -39,12 +39,15 @@ class Chat extends Component {
   }
   componentDidMount () {
     const { socket } = this.props
+    const messageList = this.refs.messageList
     // TODO: LOAD MESSAGES socket.on(load_messages), socket.emit(load_messages)
     socket.on('add_message', (msg) => {
       this.props.addIncomingMessage(msg)
+      messageList.scrollTop = messageList.scrollHeight
     })
     socket.on('add_reaction', (msg) => {
       this.props.addIncomingReaction(msg)
+      messageList.scrollTop = messageList.scrollHeight
     })
     socket.on('typing', (msg) => {
       this.props.showOthersTyping(msg)
@@ -52,12 +55,14 @@ class Chat extends Component {
     socket.on('stop_typing', user =>
       this.props.showOthersTypingStopped()
     )
-    socket.on('join_room', (msg) =>
+    socket.on('join_room', (msg) => {
       this.props.newUserJoined(msg)
-    )
+      messageList.scrollTop = messageList.scrollHeight
+    })
     socket.on('exit_room', (msg) => {
       if (msg) {
         this.props.userExit(msg)
+        messageList.scrollTop = messageList.scrollHeight
       }
     })
     socket.on('i_exit', () => {
@@ -67,10 +72,7 @@ class Chat extends Component {
     const messageList = this.refs.messageList
     messageList.scrollTop = messageList.scrollHeight
   }
-  componentDidUpdate () {
-    const messageList = this.refs.messageList
-    messageList.scrollTop = messageList.scrollHeight
-  }
+
   componentWillUnmount () {
       // Remove all listeners that depends on the mount state of the component
     this.props.socket.off('add_message')
@@ -113,6 +115,7 @@ class Chat extends Component {
       targetUser: this.state.selectedUser.bubbleId || this.state.selectedUser.userId
     };
     this.props.socket.emit('add_reaction', request);
+    this.refs.messageList.scrollTop = messageList.scrollHeight
     this.setState({
       openUserModal: false,
       selectedUser: {},
@@ -129,6 +132,7 @@ class Chat extends Component {
       targetUser:  this.state.selectedUser.bubbleId || this.state.selectedUser.userId
     };
     this.props.socket.emit('add_reaction', request);
+    this.refs.messageList.scrollTop = messageList.scrollHeight
     this.setState({
       openUserModal: false,
       selectedUser: {},
