@@ -85,7 +85,7 @@ export default class MessageListItem extends Component {
       return (
         <li className='row'>
           <div className='user-joined-message'>
-            <img style={smallImageStyle} src= {'https://flathash.com/' + (message.bubbleId ?  message.bubbleId : (message.userId || '1')) } alt="" />
+            <img style={smallImageStyle} src= {'https://flathash.com/' + (message.data.bubbleId ?  message.data.bubbleId : (message.data.userId || '1')) } alt="" />
             {message.data.username} joined
           </div>
         </li>
@@ -94,7 +94,7 @@ export default class MessageListItem extends Component {
       return (
         <li className='row'>
           <div className='user-exited-message'>
-            <img style={smallImageStyle} src= {'https://flathash.com/' + (message.bubbleId ?  message.bubbleId : (message.userId || '1')) } alt="" />
+            <img style={smallImageStyle} src= {'https://flathash.com/' + (message.data.bubbleId ?  message.data.bubbleId : (message.data.userId || '1')) } alt="" />
             {message.data.username} left
           </div>
         </li>
