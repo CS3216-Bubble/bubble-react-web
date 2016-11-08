@@ -69,7 +69,6 @@ class Chat extends Component {
       this.props.leaveChat()
       browserHistory.push('/')
     })
-    const messageList = this.refs.messageList
     messageList.scrollTop = messageList.scrollHeight
   }
 
