@@ -20,6 +20,7 @@ import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import Checkbox from 'material-ui/Checkbox'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import Slider from 'material-ui/Slider';
 import Divider from 'material-ui/Divider'
 import Chip from 'material-ui/Chip'
 import Avatar from 'material-ui/Avatar'
@@ -361,7 +362,8 @@ class AppContainer extends Component {
           <br />
           <TextField
             style={{ width: `100%` }}
-            errorText={this.validateUserLimit() === 'error' && 'User limit must be a number!'}
+            errorText={this.validateUserLimit() === 'error' && 'User limit must be a number!' 
+            || this.state.chat.userLimit > 100 && 'User limit must be less than 101.'}
             floatingLabelText='User Limit'
             onChange={::this.handleModalUserLimitChange}
             value={this.state.chat.userLimit}
