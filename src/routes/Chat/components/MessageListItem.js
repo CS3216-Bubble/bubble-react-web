@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import moment from 'moment'
 
 export default class MessageListItem extends Component {
   static propTypes = {
@@ -19,6 +20,21 @@ export default class MessageListItem extends Component {
       height: '25px',
       marginTop: '-5px',
       marginRight: '10px',
+    }
+    const getDateTimeDisplay = (msgDate) => {
+      let date = moment(msgDate);
+      if (date.isSame(new Date(), 'day')) {
+        return (
+          <span className='message-date'>
+            {moment(msgDate).format('h:mm a')}
+          </span>
+        );
+      }
+      return (
+        <span className='message-date'>
+          {moment(msgDate).format('MMM D')}
+        </span>
+      );
     }
 
     if (message.messageType == 'REACTION' && message.content == 'THANK') {
@@ -78,6 +94,7 @@ export default class MessageListItem extends Component {
                 <div className='message'>{message.message || message.content }</div>
               </div>
             </div>
+            {getDateTimeDisplay(message.createdAt)}
           </div>
         </li>
       )
