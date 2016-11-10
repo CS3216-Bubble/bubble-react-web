@@ -21,7 +21,7 @@ export default class MessageListItem extends Component {
       marginTop: '-5px',
       marginRight: '10px',
     }
-    const getDateTimeDisplay = (msgDate) => {
+    const getDateTimeDisplay = (msgDate, type) => {
       let date = moment(msgDate);
       if (date.isSame(new Date(), 'day')) {
         return (
@@ -65,6 +65,7 @@ export default class MessageListItem extends Component {
               <b>{message.username}</b>
             </div>
             <div className='message'>{ message.message || message.content }</div>
+            {getDateTimeDisplay(message.createdAt, 'my-message')}
           </div>
         </li>
       )
@@ -94,7 +95,7 @@ export default class MessageListItem extends Component {
                 <div className='message'>{message.message || message.content }</div>
               </div>
             </div>
-            {getDateTimeDisplay(message.createdAt)}
+            {getDateTimeDisplay(message.createdAt, 'others-message')}
           </div>
         </li>
       )
