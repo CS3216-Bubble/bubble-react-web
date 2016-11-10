@@ -9,7 +9,7 @@ if (!window.localStorage[BUBBLE_STATE]) {
   // no bubble id stored, generate a new one
   let bubbleState = uuid();
   window.localStorage[BUBBLE_STATE] = bubbleState;
-} 
+}
 export const bubbleState = window.localStorage[BUBBLE_STATE];
 export const socket = io(host + bubbleState);
 
@@ -34,13 +34,12 @@ const initialState = {
   otherRooms: [],
   hiddenUsers: {},
   categoryFilter: {
-    'Rant': false,
-    'Funny': false,
-    'Nolstagia': false,
-    'Relationship': false,
-    'Advice': false,
-    'School': false,
-    'Chit-chat': false
+      'Rant': true,
+      'Funny': true,
+      'Nostalgia': true,
+      'Relationship': true,
+      'Advice': true,
+      'School': true
   }
 }
 
@@ -146,7 +145,7 @@ export default function chats (state = initialState, action) {
         return u === action.userId;
       })
       const newHiddenUsers = state.hiddenUsers[action.roomId].filter( userId => {
-        return userId !== action.userId; 
+        return userId !== action.userId;
       })
       state.hiddenUsers[action.roomId] = newHiddenUsers;
       return { ...state,

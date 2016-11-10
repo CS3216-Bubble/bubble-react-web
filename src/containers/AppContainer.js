@@ -54,12 +54,12 @@ class AppContainer extends Component {
         'School': lightBlue300,
       },
       categoryFilter: {
-        'Rant': false,
-        'Funny': false,
-        'Nostalgia': false,
-        'Relationship': false,
-        'Advice': false,
-        'School': false
+        'Rant': true,
+        'Funny': true,
+        'Nostalgia': true,
+        'Relationship': true,
+        'Advice': true,
+        'School': true
       }
     }
   }
@@ -215,6 +215,7 @@ class AppContainer extends Component {
               onTouchTap={() => this.props.toggleCategory(cat)}
               className={classNames('chip', { 'enabled-chip': this.props.chats.categoryFilter[cat] })}
               key={i}
+              labelStyle={{color: 'white'}}
               backgroundColor={this.state.categoryColors[cat]}>
               {cat}
             </Chip>
@@ -246,10 +247,11 @@ class AppContainer extends Component {
           return false
         }
 
-        var pass = true
+        var pass = false
         filters.forEach((filter) => {
-          if (chat.categories.indexOf(filter) < 0) {
-            pass = false
+          // If chat contains at least one of the filtered categories
+          if (chat.categories.indexOf(filter) > -1) {
+            pass = true
           }
         })
         return pass
@@ -300,10 +302,11 @@ class AppContainer extends Component {
           return false
         }
 
-        var pass = true
+        var pass = false
         filters.forEach((filter) => {
-          if (chat.categories.indexOf(filter) < 0) {
-            pass = false
+          // If chat contains at least one of the filtered categories
+          if (chat.categories.indexOf(filter) > -1) {
+            pass = true
           }
         })
         return pass

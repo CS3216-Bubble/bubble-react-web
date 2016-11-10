@@ -6,6 +6,7 @@ import Moment from 'moment'
 import RaisedButton from 'material-ui/RaisedButton'
 import Divider from 'material-ui/Divider'
 import Chip from 'material-ui/Chip'
+import {red400, pink200, purple300, lightBlue300, amber300, orange400, grey50 } from 'material-ui/styles/colors';
 
 class ViewChat extends Component {
 
@@ -16,6 +17,17 @@ class ViewChat extends Component {
 
   constructor (props, context) {
     super(props, context)
+
+    this.state = {
+        categoryColors: {
+          'Rant': red400,
+          'Funny': amber300,
+          'Nostalgia': orange400,
+          'Relationship': pink200,
+          'Advice': purple300,
+          'School': lightBlue300,
+        }
+    }
   }
 
   componentWillMount () {
@@ -42,25 +54,23 @@ class ViewChat extends Component {
     const generateCategoriesChips = () => {
       if (this.props.chat.categories && this.props.chat.categories.length > 0) {
         return this.props.chat.categories.map((cat, i) =>
-          <Chip className='chip' key={i} >{cat}</Chip>
+          <Chip className='chip' key={i} backgroundColor={this.state.categoryColors[cat]} labelStyle={{color: 'white'}}>{cat}</Chip>
         )
       }
-      return (<h4>No Categories</h4>)
+      return [];
     }
 
     const createdBySection = () => {
       if (this.props.chat.createdByBubbleUsername) {
         return (
-          <div className='row'>
-            <h4 className='col-md-3 right-label'><b>Created By:</b></h4>
-            <h4 className='col-md-9'>{this.props.chat.createdByBubbleUsername}</h4>
+          <div style={{ marginBottom: 15 }}>
+            Created by: {this.props.chat.createdByBubbleUsername}
           </div>
         )
       } else if (this.props.chat.createdByUsername) {
         return (
-          <div className='row'>
-            <h4 className='col-md-3 right-label'><b>Created By:</b></h4>
-            <h4>{this.props.chat.createdByUsername}</h4>
+          <div style={{ padding: '15px 15px 50px 15px' }}>
+            Created by: {this.props.chat.createdByUsername}
           </div>
         )
       }
@@ -77,33 +87,27 @@ class ViewChat extends Component {
         </header>
         <Divider />
         <div style={{ padding: '15px 15px 50px 15px' }}>
-          <div className='row'>
-            <h4 className='col-md-3 right-label'><b>Description:</b></h4>
-            <h4 className='col-md-9'>{this.props.chat.roomDescription ? this.props.chat.roomDescription : 'No Description' }</h4>
+          {this.props.chat.roomDescription ?
+          <div className='chat-description'>
+            { this.props.chat.roomDescription }
           </div>
-          <div className='row'>
-            <h4 className='col-md-3 right-label'><b>Categories:</b></h4>
-            <div className='col-md-9' style={{ display: 'flex', flexWrap: 'wrap' }}>
+          : '' }
+          {this.props.chat.categories.length > 0 ?
+          <div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', paddingTop: 10 }}>
               { generateCategoriesChips() }
             </div>
           </div>
-          <div className='row'>
-            <h4 className='col-md-3 right-label'><b>Room Type:</b></h4>
-            <h4 className='col-md-9'>{this.props.chat.roomType}</h4>
-          </div>
-          <div className='row'>
-            <h4 className='col-md-3 right-label'><b>User Limit:</b></h4>
-            <h4 className='col-md-9'>{this.props.chat.userLimit}</h4>
-          </div>
-          <div className='row'>
-            <h4 className='col-md-3 right-label'><b>Number of Users:</b></h4>
-            <h4 className='col-md-9'>{this.props.chat.numUsers}</h4>
+          : '' }
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div>
+                Last active: {Moment.duration(Moment().diff(Moment(this.props.chat.lastActive))).humanize()} ago
+              </div>
+              <div>
+                {this.props.chat.numUsers} / {this.props.chat.userLimit} users
+              </div>
           </div>
           { createdBySection() }
-          <div className='row'>
-            <h4 className='col-md-3 right-label'><b>Last Active:</b></h4>
-            <h4 className='col-md-9'>{Moment(this.props.chat.lastActive).format('Do MMM YYYY, h:mm a')}</h4>
-          </div>
           { this.props.chat.numUsers < this.props.chat.userLimit ?
             <RaisedButton onTouchTap={() => this.joinChat(this.props.chat)} label='Join Chat' primary fullWidth />
               :
@@ -127,4 +131,3 @@ const mapDispatch = {
 }
 
 export default connect(mapStateToProps, mapDispatch)(ViewChat)
-
