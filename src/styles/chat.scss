@@ -82,6 +82,8 @@ $chat-bg-color: #f9fafa;
 		cursor: pointer;
 		overflow: hidden;
 		outline: none;
+		height: 50px;
+		vertical-align: center;
 	}
 
 	.message {
@@ -155,4 +157,9 @@ li {
 
 .message-date {
 	color: #bdc3c7;
+}
+
+.message-profile {
+	width: 50px;
+	float: left;
 }

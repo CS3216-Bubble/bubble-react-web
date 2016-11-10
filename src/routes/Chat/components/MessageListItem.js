@@ -14,6 +14,7 @@ export default class MessageListItem extends Component {
     const bigImageStyle = {
       width: '45px',
       height: '45px',
+      cursor: 'pointer'
     }
     const smallImageStyle = {
       width: '25px',
@@ -84,14 +85,15 @@ export default class MessageListItem extends Component {
       return (
         <li className='others-message row'>
           <div className='talk-bubble round'>
-            <div className='row'>
-              <div className='col-md-1'>
-                <img style={bigImageStyle} src= {'https://flathash.com/' + (message.bubbleId ?  message.bubbleId : (message.userId || '1')) } alt="" />
+            <div>
+              <div className="message-profile">
+                <img style={bigImageStyle} onClick={this.handleClick.bind(this, {username: message.username, userId: message.userId, bubbleId: message.bubbleId})}
+                 src= {'https://flathash.com/' + (message.bubbleId ?  message.bubbleId : (message.userId || '1')) } alt="" />
               </div>
-              <div className='col-md-11'>
-                <span>
-                  <b><button className='username-btn' onClick={this.handleClick.bind(this, {username: message.username, userId: message.userId, bubbleId: message.bubbleId})}>{message.username }</button></b>
-                </span>
+              <span>
+                <b><button className='username-btn' onClick={this.handleClick.bind(this, {username: message.username, userId: message.userId, bubbleId: message.bubbleId})}>{message.username }</button></b>
+              </span>
+              <div>
                 <div className='message'>{message.message || message.content }</div>
               </div>
             </div>
